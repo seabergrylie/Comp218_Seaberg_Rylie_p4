@@ -1,0 +1,988 @@
+<html>
+<head>
+<title>main.cpp</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #7a7e85;}
+.s1 { color: #bcbec4;}
+.s2 { color: #b3ae60;}
+.s3 { color: #6aab73;}
+.s4 { color: #cf8e6d;}
+.s5 { color: #bcbec4;}
+.s6 { color: #2aacb8;}
+</style>
+</head>
+<body bgcolor="#1e1f22">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+main.cpp</font>
+</center></td></tr></table>
+<pre><span class="s0">/* 
+ * Assignment: Sorting Algorithms (COMP 218- Data Structures) (Assignment Number): 4 
+ * Author(s):Rylie Seaberg 
+ * Due Date: Wednesday, 12/4/2024 11:59:00 PM 
+ * Description: In this project, we are working with sorting algorithms in order to sort a 
+ * vector or array of integers. The second part of the project is an assesment of performance on 
+ * the sorting algorithms to test their execution times based on files of varying numbers integers 
+ * (100, 1000, 10000). 
+ * Comments: 
+ * Honor Pledge: I have abided by the Wheaton Honor Code and 
+all work below was performed by Rylie Seaberg .*/</span>
+
+<span class="s2">#include </span><span class="s3">&lt;iostream&gt;</span>
+<span class="s2">#include </span><span class="s3">&quot;sortings.h&quot;</span>
+<span class="s2">#include </span><span class="s3">&lt;vector&gt;</span>
+<span class="s2">#include </span><span class="s3">&lt;fstream&gt;</span>
+<span class="s2">#include </span><span class="s3">&lt;string&gt;</span>
+<span class="s2">#include </span><span class="s3">&lt;chrono&gt;</span>
+<span class="s2">#include </span><span class="s3">&lt;stdexcept&gt;</span>
+<span class="s4">using namespace </span><span class="s1">std</span><span class="s5">;</span>
+
+
+<span class="s0">/** printing all the elements from the sorted vector 
+ * * @params &amp;v- a reference to a vector of integers to be printed 
+ * * @returns void function, N/A 
+**/</span>
+<span class="s4">void </span><span class="s1">print</span><span class="s5">(</span><span class="s4">const </span><span class="s1">vector</span><span class="s5">&lt;</span><span class="s4">int</span><span class="s5">&gt;&amp; </span><span class="s1">v</span><span class="s5">) {</span>
+    <span class="s4">for </span><span class="s5">(</span><span class="s1">size_t i </span><span class="s5">= </span><span class="s6">0</span><span class="s5">; </span><span class="s1">i </span><span class="s5">&lt; </span><span class="s1">v</span><span class="s5">.</span><span class="s1">size</span><span class="s5">(); </span><span class="s1">i</span><span class="s5">++) {</span>
+        <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s1">v</span><span class="s5">[</span><span class="s1">i</span><span class="s5">];</span>
+        <span class="s4">if </span><span class="s5">(</span><span class="s1">i </span><span class="s5">!= </span><span class="s1">v</span><span class="s5">.</span><span class="s1">size</span><span class="s5">() - </span><span class="s6">1</span><span class="s5">) {</span>
+            <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot; &quot;</span><span class="s5">;</span>
+        <span class="s5">}</span>
+    <span class="s5">}</span>
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s1">endl</span><span class="s5">;</span>
+<span class="s5">}</span>
+
+
+<span class="s0">//TESTING FOR THE SORTING ALGORITHMS</span>
+
+
+<span class="s0">/** 
+ * Test Plan: 
+ * 
+ * 1) check if insertion sort works with a small number of integers in the vector 
+ * 2) check if insertion sort works with a large number of integers in the vector 
+ * 3) check how insertion sort deals with duplicates 
+ * 4) check how insertion sort deals with negative integers 
+ * 5) check how insertion sort deals with an already sorted vector 
+ * 
+ * @params: sorter- object to access the Sortings class 
+ * @returns: N/A, void function 
+ * dependency: insertionSort() 
+ * */</span>
+<span class="s4">void </span><span class="s1">test_insertion</span><span class="s5">(</span><span class="s1">Sortings</span><span class="s5">&amp; </span><span class="s1">sorter</span><span class="s5">) {</span>
+    <span class="s0">// Test 1: Small number of integers</span>
+    <span class="s1">vector</span><span class="s5">&lt;</span><span class="s4">int</span><span class="s5">&gt; </span><span class="s1">v1 </span><span class="s5">= {</span><span class="s6">7</span><span class="s5">, </span><span class="s6">2</span><span class="s5">, </span><span class="s6">5</span><span class="s5">, </span><span class="s6">3</span><span class="s5">};</span>
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Original array: &quot;</span><span class="s5">;</span>
+    <span class="s1">print</span><span class="s5">(</span><span class="s1">v1</span><span class="s5">);</span>
+
+    <span class="s1">sorter</span><span class="s5">.</span><span class="s1">insertionSort</span><span class="s5">(</span><span class="s1">v1</span><span class="s5">);</span>
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Sorted array: &quot;</span><span class="s5">;</span>
+    <span class="s1">print</span><span class="s5">(</span><span class="s1">v1</span><span class="s5">);</span>
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Expected: 2 3 5 7&quot; </span><span class="s5">&lt;&lt; </span><span class="s1">endl</span><span class="s5">;</span>
+
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Sorting using output of std::sort &quot; </span><span class="s5">&lt;&lt; </span><span class="s1">endl</span><span class="s5">; </span><span class="s0">//is the same</span>
+    <span class="s1">sort </span><span class="s5">(</span><span class="s1">v1</span><span class="s5">.</span><span class="s1">begin</span><span class="s5">(), </span><span class="s1">v1</span><span class="s5">.</span><span class="s1">end</span><span class="s5">());</span>
+    <span class="s4">for </span><span class="s5">(</span><span class="s4">int </span><span class="s5">&amp; </span><span class="s1">it </span><span class="s5">: </span><span class="s1">v1</span><span class="s5">){</span>
+        <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">' ' </span><span class="s5">&lt;&lt; </span><span class="s1">it</span><span class="s5">;</span>
+    <span class="s5">}</span>
+
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">'</span><span class="s4">\n</span><span class="s3">' </span><span class="s5">&lt;&lt; </span><span class="s1">endl</span><span class="s5">;</span>
+
+    <span class="s0">// Test 2: Large number of integers</span>
+    <span class="s1">vector</span><span class="s5">&lt;</span><span class="s4">int</span><span class="s5">&gt; </span><span class="s1">v2 </span><span class="s5">= {</span><span class="s6">15</span><span class="s5">, </span><span class="s6">3</span><span class="s5">, </span><span class="s6">12</span><span class="s5">, </span><span class="s6">6</span><span class="s5">, </span><span class="s6">9</span><span class="s5">, </span><span class="s6">17</span><span class="s5">, </span><span class="s6">5</span><span class="s5">, </span><span class="s6">20</span><span class="s5">, </span><span class="s6">8</span><span class="s5">, </span><span class="s6">2</span><span class="s5">, </span><span class="s6">10</span><span class="s5">, </span><span class="s6">1</span><span class="s5">};</span>
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Original array: &quot;</span><span class="s5">;</span>
+    <span class="s1">print</span><span class="s5">(</span><span class="s1">v2</span><span class="s5">);</span>
+
+    <span class="s1">sorter</span><span class="s5">.</span><span class="s1">insertionSort</span><span class="s5">(</span><span class="s1">v2</span><span class="s5">);</span>
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Sorted array: &quot;</span><span class="s5">;</span>
+    <span class="s1">print</span><span class="s5">(</span><span class="s1">v2</span><span class="s5">);</span>
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Expected: 1 2 3 5 6 8 9 10 12 15 17 20&quot; </span><span class="s5">&lt;&lt; </span><span class="s1">endl</span><span class="s5">;</span>
+
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Sorting using output of std::sort &quot; </span><span class="s5">&lt;&lt; </span><span class="s1">endl</span><span class="s5">; </span><span class="s0">//is the same</span>
+    <span class="s1">sort </span><span class="s5">(</span><span class="s1">v2</span><span class="s5">.</span><span class="s1">begin</span><span class="s5">(), </span><span class="s1">v2</span><span class="s5">.</span><span class="s1">end</span><span class="s5">());</span>
+    <span class="s4">for </span><span class="s5">(</span><span class="s4">int </span><span class="s5">&amp; </span><span class="s1">it </span><span class="s5">: </span><span class="s1">v2</span><span class="s5">){</span>
+        <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">' ' </span><span class="s5">&lt;&lt; </span><span class="s1">it</span><span class="s5">;</span>
+    <span class="s5">}</span>
+
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">'</span><span class="s4">\n</span><span class="s3">' </span><span class="s5">&lt;&lt; </span><span class="s1">endl</span><span class="s5">;</span>
+
+    <span class="s0">// Test 3: Handling duplicates</span>
+    <span class="s1">vector</span><span class="s5">&lt;</span><span class="s4">int</span><span class="s5">&gt; </span><span class="s1">v3 </span><span class="s5">= {</span><span class="s6">4</span><span class="s5">, </span><span class="s6">2</span><span class="s5">, </span><span class="s6">7</span><span class="s5">, </span><span class="s6">7</span><span class="s5">, </span><span class="s6">3</span><span class="s5">, </span><span class="s6">4</span><span class="s5">, </span><span class="s6">1</span><span class="s5">};</span>
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Original array: &quot;</span><span class="s5">;</span>
+    <span class="s1">print</span><span class="s5">(</span><span class="s1">v3</span><span class="s5">);</span>
+
+    <span class="s1">sorter</span><span class="s5">.</span><span class="s1">insertionSort</span><span class="s5">(</span><span class="s1">v3</span><span class="s5">);</span>
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Sorted array: &quot;</span><span class="s5">;</span>
+    <span class="s1">print</span><span class="s5">(</span><span class="s1">v3</span><span class="s5">);</span>
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Expected: 1 2 3 4 4 7 7&quot; </span><span class="s5">&lt;&lt; </span><span class="s1">endl</span><span class="s5">;</span>
+
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Sorting using output of std::sort &quot; </span><span class="s5">&lt;&lt; </span><span class="s1">endl</span><span class="s5">; </span><span class="s0">//is the same</span>
+    <span class="s1">sort </span><span class="s5">(</span><span class="s1">v3</span><span class="s5">.</span><span class="s1">begin</span><span class="s5">(), </span><span class="s1">v3</span><span class="s5">.</span><span class="s1">end</span><span class="s5">());</span>
+    <span class="s4">for </span><span class="s5">(</span><span class="s4">int </span><span class="s5">&amp; </span><span class="s1">it </span><span class="s5">: </span><span class="s1">v3</span><span class="s5">){</span>
+        <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">' ' </span><span class="s5">&lt;&lt; </span><span class="s1">it</span><span class="s5">;</span>
+    <span class="s5">}</span>
+
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">'</span><span class="s4">\n</span><span class="s3">' </span><span class="s5">&lt;&lt; </span><span class="s1">endl</span><span class="s5">;</span>
+
+    <span class="s0">// Test 4: Handling negative integers</span>
+    <span class="s1">vector</span><span class="s5">&lt;</span><span class="s4">int</span><span class="s5">&gt; </span><span class="s1">v4 </span><span class="s5">= {-</span><span class="s6">5</span><span class="s5">, -</span><span class="s6">2</span><span class="s5">, -</span><span class="s6">8</span><span class="s5">, </span><span class="s6">3</span><span class="s5">, </span><span class="s6">0</span><span class="s5">, -</span><span class="s6">1</span><span class="s5">};</span>
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Original array: &quot;</span><span class="s5">;</span>
+    <span class="s1">print</span><span class="s5">(</span><span class="s1">v4</span><span class="s5">);</span>
+
+    <span class="s1">sorter</span><span class="s5">.</span><span class="s1">insertionSort</span><span class="s5">(</span><span class="s1">v4</span><span class="s5">);</span>
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Sorted array: &quot;</span><span class="s5">;</span>
+    <span class="s1">print</span><span class="s5">(</span><span class="s1">v4</span><span class="s5">);</span>
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Expected: -8 -5 -2 -1 0 3&quot; </span><span class="s5">&lt;&lt; </span><span class="s1">endl</span><span class="s5">;</span>
+
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Sorting using output of std::sort &quot; </span><span class="s5">&lt;&lt; </span><span class="s1">endl</span><span class="s5">; </span><span class="s0">//is the same</span>
+    <span class="s1">sort </span><span class="s5">(</span><span class="s1">v4</span><span class="s5">.</span><span class="s1">begin</span><span class="s5">(), </span><span class="s1">v4</span><span class="s5">.</span><span class="s1">end</span><span class="s5">());</span>
+    <span class="s4">for </span><span class="s5">(</span><span class="s4">int </span><span class="s5">&amp; </span><span class="s1">it </span><span class="s5">: </span><span class="s1">v4</span><span class="s5">){</span>
+        <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">' ' </span><span class="s5">&lt;&lt; </span><span class="s1">it</span><span class="s5">;</span>
+    <span class="s5">}</span>
+
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">'</span><span class="s4">\n</span><span class="s3">' </span><span class="s5">&lt;&lt; </span><span class="s1">endl</span><span class="s5">;</span>
+
+    <span class="s0">// Test 5: Already sorted vector</span>
+    <span class="s1">vector</span><span class="s5">&lt;</span><span class="s4">int</span><span class="s5">&gt; </span><span class="s1">v5 </span><span class="s5">= {</span><span class="s6">1</span><span class="s5">, </span><span class="s6">2</span><span class="s5">, </span><span class="s6">3</span><span class="s5">, </span><span class="s6">4</span><span class="s5">, </span><span class="s6">5</span><span class="s5">};</span>
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Original array: &quot;</span><span class="s5">;</span>
+    <span class="s1">print</span><span class="s5">(</span><span class="s1">v5</span><span class="s5">);</span>
+
+    <span class="s1">sorter</span><span class="s5">.</span><span class="s1">insertionSort</span><span class="s5">(</span><span class="s1">v5</span><span class="s5">);</span>
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Sorted array: &quot;</span><span class="s5">;</span>
+    <span class="s1">print</span><span class="s5">(</span><span class="s1">v5</span><span class="s5">);</span>
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Expected: 1 2 3 4 5&quot; </span><span class="s5">&lt;&lt; </span><span class="s1">endl</span><span class="s5">;</span>
+
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Sorting using output of std::sort &quot; </span><span class="s5">&lt;&lt; </span><span class="s1">endl</span><span class="s5">; </span><span class="s0">//is the same</span>
+    <span class="s1">sort </span><span class="s5">(</span><span class="s1">v5</span><span class="s5">.</span><span class="s1">begin</span><span class="s5">(), </span><span class="s1">v5</span><span class="s5">.</span><span class="s1">end</span><span class="s5">());</span>
+    <span class="s4">for </span><span class="s5">(</span><span class="s4">int </span><span class="s5">&amp; </span><span class="s1">it </span><span class="s5">: </span><span class="s1">v5</span><span class="s5">){</span>
+        <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">' ' </span><span class="s5">&lt;&lt; </span><span class="s1">it</span><span class="s5">;</span>
+    <span class="s5">}</span>
+
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">'</span><span class="s4">\n</span><span class="s3">' </span><span class="s5">&lt;&lt; </span><span class="s1">endl</span><span class="s5">;</span>
+<span class="s5">}</span>
+
+<span class="s0">/** 
+ * Test Plan: 
+ * 
+ * 1) check if bubble sort works with a small number of integers in the vector 
+ * 2) check if bubble sort works with a large number of integers in the vector 
+ * 3) check how bubble sort deals with duplicates 
+ * 4) check how bubble sort deals with negative integers 
+ * 5) check how bubble sort deals with an already sorted vector 
+ * 
+ * @params: sorter- object to access the Sortings class 
+ * @returns: N/A, void function 
+ * dependency: bubbleSort() 
+ * */</span>
+<span class="s4">void </span><span class="s1">test_bubble</span><span class="s5">(</span><span class="s1">Sortings</span><span class="s5">&amp; </span><span class="s1">sorter</span><span class="s5">){</span>
+    <span class="s1">vector</span><span class="s5">&lt;</span><span class="s4">int</span><span class="s5">&gt; </span><span class="s1">v1 </span><span class="s5">= {</span><span class="s6">7</span><span class="s5">, </span><span class="s6">2</span><span class="s5">, </span><span class="s6">5</span><span class="s5">, </span><span class="s6">3</span><span class="s5">};</span>
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Original array: &quot;</span><span class="s5">;</span>
+    <span class="s1">print</span><span class="s5">(</span><span class="s1">v1</span><span class="s5">);</span>
+
+    <span class="s1">sorter</span><span class="s5">.</span><span class="s1">bubbleSort</span><span class="s5">(</span><span class="s1">v1</span><span class="s5">);</span>
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Sorted array: &quot;</span><span class="s5">;</span>
+    <span class="s1">print</span><span class="s5">(</span><span class="s1">v1</span><span class="s5">);</span>
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Expected: 2 3 5 7&quot; </span><span class="s5">&lt;&lt; </span><span class="s1">endl</span><span class="s5">;</span>
+
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Sorting using output of std::sort &quot; </span><span class="s5">&lt;&lt; </span><span class="s1">endl</span><span class="s5">; </span><span class="s0">//is the same</span>
+    <span class="s1">sort </span><span class="s5">(</span><span class="s1">v1</span><span class="s5">.</span><span class="s1">begin</span><span class="s5">(), </span><span class="s1">v1</span><span class="s5">.</span><span class="s1">end</span><span class="s5">());</span>
+    <span class="s4">for </span><span class="s5">(</span><span class="s4">int </span><span class="s5">&amp; </span><span class="s1">it </span><span class="s5">: </span><span class="s1">v1</span><span class="s5">){</span>
+        <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">' ' </span><span class="s5">&lt;&lt; </span><span class="s1">it</span><span class="s5">;</span>
+    <span class="s5">}</span>
+
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">'</span><span class="s4">\n</span><span class="s3">' </span><span class="s5">&lt;&lt; </span><span class="s1">endl</span><span class="s5">;</span>
+
+    <span class="s0">// Test 2: Large number of integers</span>
+    <span class="s1">vector</span><span class="s5">&lt;</span><span class="s4">int</span><span class="s5">&gt; </span><span class="s1">v2 </span><span class="s5">= {</span><span class="s6">15</span><span class="s5">, </span><span class="s6">3</span><span class="s5">, </span><span class="s6">12</span><span class="s5">, </span><span class="s6">6</span><span class="s5">, </span><span class="s6">9</span><span class="s5">, </span><span class="s6">17</span><span class="s5">, </span><span class="s6">5</span><span class="s5">, </span><span class="s6">20</span><span class="s5">, </span><span class="s6">8</span><span class="s5">, </span><span class="s6">2</span><span class="s5">, </span><span class="s6">10</span><span class="s5">, </span><span class="s6">1</span><span class="s5">};</span>
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Original array: &quot;</span><span class="s5">;</span>
+    <span class="s1">print</span><span class="s5">(</span><span class="s1">v2</span><span class="s5">);</span>
+
+    <span class="s1">sorter</span><span class="s5">.</span><span class="s1">bubbleSort</span><span class="s5">(</span><span class="s1">v2</span><span class="s5">);</span>
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Sorted array: &quot;</span><span class="s5">;</span>
+    <span class="s1">print</span><span class="s5">(</span><span class="s1">v2</span><span class="s5">);</span>
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Expected: 1 2 3 5 6 8 9 10 12 15 17 20&quot; </span><span class="s5">&lt;&lt; </span><span class="s1">endl</span><span class="s5">;</span>
+
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Sorting using output of std::sort &quot; </span><span class="s5">&lt;&lt; </span><span class="s1">endl</span><span class="s5">; </span><span class="s0">//is the same</span>
+    <span class="s1">sort </span><span class="s5">(</span><span class="s1">v2</span><span class="s5">.</span><span class="s1">begin</span><span class="s5">(), </span><span class="s1">v2</span><span class="s5">.</span><span class="s1">end</span><span class="s5">());</span>
+    <span class="s4">for </span><span class="s5">(</span><span class="s4">int </span><span class="s5">&amp; </span><span class="s1">it </span><span class="s5">: </span><span class="s1">v2</span><span class="s5">){</span>
+        <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">' ' </span><span class="s5">&lt;&lt; </span><span class="s1">it</span><span class="s5">;</span>
+    <span class="s5">}</span>
+
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">'</span><span class="s4">\n</span><span class="s3">' </span><span class="s5">&lt;&lt; </span><span class="s1">endl</span><span class="s5">;</span>
+
+    <span class="s0">// Test 3: Handling duplicates</span>
+    <span class="s1">vector</span><span class="s5">&lt;</span><span class="s4">int</span><span class="s5">&gt; </span><span class="s1">v3 </span><span class="s5">= {</span><span class="s6">4</span><span class="s5">, </span><span class="s6">2</span><span class="s5">, </span><span class="s6">7</span><span class="s5">, </span><span class="s6">7</span><span class="s5">, </span><span class="s6">3</span><span class="s5">, </span><span class="s6">4</span><span class="s5">, </span><span class="s6">1</span><span class="s5">};</span>
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Original array: &quot;</span><span class="s5">;</span>
+    <span class="s1">print</span><span class="s5">(</span><span class="s1">v3</span><span class="s5">);</span>
+
+    <span class="s1">sorter</span><span class="s5">.</span><span class="s1">bubbleSort</span><span class="s5">(</span><span class="s1">v3</span><span class="s5">);</span>
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Sorted array: &quot;</span><span class="s5">;</span>
+    <span class="s1">print</span><span class="s5">(</span><span class="s1">v3</span><span class="s5">);</span>
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Expected: 1 2 3 4 4 7 7&quot; </span><span class="s5">&lt;&lt; </span><span class="s1">endl</span><span class="s5">;</span>
+
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Sorting using output of std::sort &quot; </span><span class="s5">&lt;&lt; </span><span class="s1">endl</span><span class="s5">; </span><span class="s0">//is the same</span>
+    <span class="s1">sort </span><span class="s5">(</span><span class="s1">v3</span><span class="s5">.</span><span class="s1">begin</span><span class="s5">(), </span><span class="s1">v3</span><span class="s5">.</span><span class="s1">end</span><span class="s5">());</span>
+    <span class="s4">for </span><span class="s5">(</span><span class="s4">int </span><span class="s5">&amp; </span><span class="s1">it </span><span class="s5">: </span><span class="s1">v3</span><span class="s5">){</span>
+        <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">' ' </span><span class="s5">&lt;&lt; </span><span class="s1">it</span><span class="s5">;</span>
+    <span class="s5">}</span>
+
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">'</span><span class="s4">\n</span><span class="s3">' </span><span class="s5">&lt;&lt; </span><span class="s1">endl</span><span class="s5">;</span>
+
+    <span class="s0">// Test 4: Handling negative integers</span>
+    <span class="s1">vector</span><span class="s5">&lt;</span><span class="s4">int</span><span class="s5">&gt; </span><span class="s1">v4 </span><span class="s5">= {-</span><span class="s6">5</span><span class="s5">, -</span><span class="s6">2</span><span class="s5">, -</span><span class="s6">8</span><span class="s5">, </span><span class="s6">3</span><span class="s5">, </span><span class="s6">0</span><span class="s5">, -</span><span class="s6">1</span><span class="s5">};</span>
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Original array: &quot;</span><span class="s5">;</span>
+    <span class="s1">print</span><span class="s5">(</span><span class="s1">v4</span><span class="s5">);</span>
+
+    <span class="s1">sorter</span><span class="s5">.</span><span class="s1">bubbleSort</span><span class="s5">(</span><span class="s1">v4</span><span class="s5">);</span>
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Sorted array: &quot;</span><span class="s5">;</span>
+    <span class="s1">print</span><span class="s5">(</span><span class="s1">v4</span><span class="s5">);</span>
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Expected: -8 -5 -2 -1 0 3&quot; </span><span class="s5">&lt;&lt; </span><span class="s1">endl</span><span class="s5">;</span>
+
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Sorting using output of std::sort &quot; </span><span class="s5">&lt;&lt; </span><span class="s1">endl</span><span class="s5">; </span><span class="s0">//is the same</span>
+    <span class="s1">sort </span><span class="s5">(</span><span class="s1">v4</span><span class="s5">.</span><span class="s1">begin</span><span class="s5">(), </span><span class="s1">v4</span><span class="s5">.</span><span class="s1">end</span><span class="s5">());</span>
+    <span class="s4">for </span><span class="s5">(</span><span class="s4">int </span><span class="s5">&amp; </span><span class="s1">it </span><span class="s5">: </span><span class="s1">v4</span><span class="s5">){</span>
+        <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">' ' </span><span class="s5">&lt;&lt; </span><span class="s1">it</span><span class="s5">;</span>
+    <span class="s5">}</span>
+
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">'</span><span class="s4">\n</span><span class="s3">' </span><span class="s5">&lt;&lt; </span><span class="s1">endl</span><span class="s5">;</span>
+
+    <span class="s0">// Test 5: Already sorted vector</span>
+    <span class="s1">vector</span><span class="s5">&lt;</span><span class="s4">int</span><span class="s5">&gt; </span><span class="s1">v5 </span><span class="s5">= {</span><span class="s6">1</span><span class="s5">, </span><span class="s6">2</span><span class="s5">, </span><span class="s6">3</span><span class="s5">, </span><span class="s6">4</span><span class="s5">, </span><span class="s6">5</span><span class="s5">};</span>
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Original array: &quot;</span><span class="s5">;</span>
+    <span class="s1">print</span><span class="s5">(</span><span class="s1">v5</span><span class="s5">);</span>
+
+    <span class="s1">sorter</span><span class="s5">.</span><span class="s1">bubbleSort</span><span class="s5">(</span><span class="s1">v5</span><span class="s5">);</span>
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Sorted array: &quot;</span><span class="s5">;</span>
+    <span class="s1">print</span><span class="s5">(</span><span class="s1">v5</span><span class="s5">);</span>
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Expected: 1 2 3 4 5&quot; </span><span class="s5">&lt;&lt; </span><span class="s1">endl</span><span class="s5">;</span>
+
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Sorting using output of std::sort &quot; </span><span class="s5">&lt;&lt; </span><span class="s1">endl</span><span class="s5">; </span><span class="s0">//is the same</span>
+    <span class="s1">sort </span><span class="s5">(</span><span class="s1">v5</span><span class="s5">.</span><span class="s1">begin</span><span class="s5">(), </span><span class="s1">v5</span><span class="s5">.</span><span class="s1">end</span><span class="s5">());</span>
+    <span class="s4">for </span><span class="s5">(</span><span class="s4">int </span><span class="s5">&amp; </span><span class="s1">it </span><span class="s5">: </span><span class="s1">v5</span><span class="s5">){</span>
+        <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">' ' </span><span class="s5">&lt;&lt; </span><span class="s1">it</span><span class="s5">;</span>
+    <span class="s5">}</span>
+
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">'</span><span class="s4">\n</span><span class="s3">' </span><span class="s5">&lt;&lt; </span><span class="s1">endl</span><span class="s5">;</span>
+<span class="s5">}</span>
+
+<span class="s0">/** 
+ * Test Plan: 
+ * 
+ * 1) check if quick sort works with a small number of integers in the vector 
+ * 2) check if quick sort works with a large number of integers in the vector 
+ * 3) check how quick sort deals with duplicates 
+ * 4) check how quick sort deals with negative integers 
+ * 5) check how quick sort deals with an already sorted vector 
+ * 
+ * @params: sorter- object to access the Sortings class 
+ * @returns: N/A, void function 
+ * dependency: quickSort() 
+ * */</span>
+<span class="s4">void </span><span class="s1">test_quicksort</span><span class="s5">(</span><span class="s1">Sortings</span><span class="s5">&amp; </span><span class="s1">sorter</span><span class="s5">) {</span>
+    <span class="s0">// Test 1: Small number of integers</span>
+    <span class="s1">vector</span><span class="s5">&lt;</span><span class="s4">int</span><span class="s5">&gt; </span><span class="s1">v1 </span><span class="s5">= {</span><span class="s6">1</span><span class="s5">, </span><span class="s6">7</span><span class="s5">, </span><span class="s6">6</span><span class="s5">, </span><span class="s6">12</span><span class="s5">};</span>
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Original array: &quot;</span><span class="s5">;</span>
+    <span class="s1">print</span><span class="s5">(</span><span class="s1">v1</span><span class="s5">);</span>
+
+    <span class="s1">sorter</span><span class="s5">.</span><span class="s1">quickSort</span><span class="s5">(</span><span class="s1">v1</span><span class="s5">, </span><span class="s6">0</span><span class="s5">, </span><span class="s1">v1</span><span class="s5">.</span><span class="s1">size</span><span class="s5">() - </span><span class="s6">1</span><span class="s5">);</span>
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Final sorted array: &quot;</span><span class="s5">;</span>
+    <span class="s1">print</span><span class="s5">(</span><span class="s1">v1</span><span class="s5">);</span>
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Expected: 1 6 7 12&quot; </span><span class="s5">&lt;&lt;</span><span class="s1">endl</span><span class="s5">;</span>
+
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Sorting using output of std::sort &quot; </span><span class="s5">&lt;&lt; </span><span class="s1">endl</span><span class="s5">; </span><span class="s0">//is the same</span>
+    <span class="s1">sort </span><span class="s5">(</span><span class="s1">v1</span><span class="s5">.</span><span class="s1">begin</span><span class="s5">(), </span><span class="s1">v1</span><span class="s5">.</span><span class="s1">end</span><span class="s5">());</span>
+    <span class="s4">for </span><span class="s5">(</span><span class="s4">int </span><span class="s5">&amp; </span><span class="s1">it </span><span class="s5">: </span><span class="s1">v1</span><span class="s5">){</span>
+        <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">' ' </span><span class="s5">&lt;&lt; </span><span class="s1">it</span><span class="s5">;</span>
+    <span class="s5">}</span>
+
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">'</span><span class="s4">\n</span><span class="s3">' </span><span class="s5">&lt;&lt; </span><span class="s1">endl</span><span class="s5">;</span>
+
+    <span class="s0">// Test 2: Large number of integers</span>
+    <span class="s1">vector</span><span class="s5">&lt;</span><span class="s4">int</span><span class="s5">&gt; </span><span class="s1">v2 </span><span class="s5">= {</span><span class="s6">1</span><span class="s5">, </span><span class="s6">8</span><span class="s5">, </span><span class="s6">19</span><span class="s5">, </span><span class="s6">12</span><span class="s5">, </span><span class="s6">67</span><span class="s5">, </span><span class="s6">89</span><span class="s5">, </span><span class="s6">96</span><span class="s5">, </span><span class="s6">120</span><span class="s5">, </span><span class="s6">13</span><span class="s5">, </span><span class="s6">77</span><span class="s5">, </span><span class="s6">2</span><span class="s5">, </span><span class="s6">9</span><span class="s5">};</span>
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Original array: &quot;</span><span class="s5">;</span>
+    <span class="s1">print</span><span class="s5">(</span><span class="s1">v2</span><span class="s5">);</span>
+
+    <span class="s1">sorter</span><span class="s5">.</span><span class="s1">quickSort</span><span class="s5">(</span><span class="s1">v2</span><span class="s5">, </span><span class="s6">0</span><span class="s5">, </span><span class="s1">v2</span><span class="s5">.</span><span class="s1">size</span><span class="s5">() - </span><span class="s6">1</span><span class="s5">);</span>
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Final sorted array: &quot;</span><span class="s5">;</span>
+    <span class="s1">print</span><span class="s5">(</span><span class="s1">v2</span><span class="s5">);</span>
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Expected: 1 2 8 9 12 13 19 67 77 89 96 120&quot; </span><span class="s5">&lt;&lt; </span><span class="s1">endl</span><span class="s5">;</span>
+
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Sorting using output of std::sort &quot; </span><span class="s5">&lt;&lt; </span><span class="s1">endl</span><span class="s5">; </span><span class="s0">//is the same</span>
+    <span class="s1">sort </span><span class="s5">(</span><span class="s1">v2</span><span class="s5">.</span><span class="s1">begin</span><span class="s5">(), </span><span class="s1">v2</span><span class="s5">.</span><span class="s1">end</span><span class="s5">());</span>
+    <span class="s4">for </span><span class="s5">(</span><span class="s4">int </span><span class="s5">&amp; </span><span class="s1">it </span><span class="s5">: </span><span class="s1">v2</span><span class="s5">){</span>
+        <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">' ' </span><span class="s5">&lt;&lt; </span><span class="s1">it</span><span class="s5">;</span>
+    <span class="s5">}</span>
+
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">'</span><span class="s4">\n</span><span class="s3">' </span><span class="s5">&lt;&lt; </span><span class="s1">endl</span><span class="s5">;</span>
+
+    <span class="s0">// Test 3: Handling duplicates</span>
+    <span class="s1">vector</span><span class="s5">&lt;</span><span class="s4">int</span><span class="s5">&gt; </span><span class="s1">v3 </span><span class="s5">= {</span><span class="s6">1</span><span class="s5">, </span><span class="s6">7</span><span class="s5">, </span><span class="s6">12</span><span class="s5">, </span><span class="s6">19</span><span class="s5">, </span><span class="s6">7</span><span class="s5">, </span><span class="s6">65</span><span class="s5">, </span><span class="s6">16</span><span class="s5">};</span>
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Original array: &quot;</span><span class="s5">;</span>
+    <span class="s1">print</span><span class="s5">(</span><span class="s1">v3</span><span class="s5">);</span>
+
+    <span class="s1">sorter</span><span class="s5">.</span><span class="s1">quickSort</span><span class="s5">(</span><span class="s1">v3</span><span class="s5">, </span><span class="s6">0</span><span class="s5">, </span><span class="s1">v3</span><span class="s5">.</span><span class="s1">size</span><span class="s5">() - </span><span class="s6">1</span><span class="s5">);</span>
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Final sorted array: &quot;</span><span class="s5">;</span>
+    <span class="s1">print</span><span class="s5">(</span><span class="s1">v3</span><span class="s5">);</span>
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Expected: 1 7 7 12 16 19 65&quot; </span><span class="s5">&lt;&lt; </span><span class="s1">endl</span><span class="s5">;</span>
+
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Sorting using output of std::sort &quot; </span><span class="s5">&lt;&lt; </span><span class="s1">endl</span><span class="s5">; </span><span class="s0">//is the same</span>
+    <span class="s1">sort </span><span class="s5">(</span><span class="s1">v3</span><span class="s5">.</span><span class="s1">begin</span><span class="s5">(), </span><span class="s1">v3</span><span class="s5">.</span><span class="s1">end</span><span class="s5">());</span>
+    <span class="s4">for </span><span class="s5">(</span><span class="s4">int </span><span class="s5">&amp; </span><span class="s1">it </span><span class="s5">: </span><span class="s1">v3</span><span class="s5">){</span>
+        <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">' ' </span><span class="s5">&lt;&lt; </span><span class="s1">it</span><span class="s5">;</span>
+    <span class="s5">}</span>
+
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">'</span><span class="s4">\n</span><span class="s3">' </span><span class="s5">&lt;&lt; </span><span class="s1">endl</span><span class="s5">;</span>
+
+    <span class="s0">// Test 4: Negative integers</span>
+    <span class="s1">vector</span><span class="s5">&lt;</span><span class="s4">int</span><span class="s5">&gt; </span><span class="s1">v4 </span><span class="s5">= {-</span><span class="s6">3</span><span class="s5">, -</span><span class="s6">1</span><span class="s5">, -</span><span class="s6">7</span><span class="s5">, </span><span class="s6">4</span><span class="s5">, </span><span class="s6">0</span><span class="s5">, -</span><span class="s6">2</span><span class="s5">};</span>
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Original array: &quot;</span><span class="s5">;</span>
+    <span class="s1">print</span><span class="s5">(</span><span class="s1">v4</span><span class="s5">);</span>
+
+    <span class="s1">sorter</span><span class="s5">.</span><span class="s1">quickSort</span><span class="s5">(</span><span class="s1">v4</span><span class="s5">, </span><span class="s6">0</span><span class="s5">, </span><span class="s1">v4</span><span class="s5">.</span><span class="s1">size</span><span class="s5">() - </span><span class="s6">1</span><span class="s5">);</span>
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Final sorted array: &quot;</span><span class="s5">;</span>
+    <span class="s1">print</span><span class="s5">(</span><span class="s1">v4</span><span class="s5">);</span>
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Expected: -7 -3 -2 -1 0 4&quot; </span><span class="s5">&lt;&lt; </span><span class="s1">endl</span><span class="s5">;</span>
+
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Sorting using output of std::sort &quot; </span><span class="s5">&lt;&lt; </span><span class="s1">endl</span><span class="s5">; </span><span class="s0">//is the same</span>
+    <span class="s1">sort </span><span class="s5">(</span><span class="s1">v4</span><span class="s5">.</span><span class="s1">begin</span><span class="s5">(), </span><span class="s1">v4</span><span class="s5">.</span><span class="s1">end</span><span class="s5">());</span>
+    <span class="s4">for </span><span class="s5">(</span><span class="s4">int </span><span class="s5">&amp; </span><span class="s1">it </span><span class="s5">: </span><span class="s1">v4</span><span class="s5">){</span>
+        <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">' ' </span><span class="s5">&lt;&lt; </span><span class="s1">it</span><span class="s5">;</span>
+    <span class="s5">}</span>
+
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">'</span><span class="s4">\n</span><span class="s3">' </span><span class="s5">&lt;&lt; </span><span class="s1">endl</span><span class="s5">;</span>
+
+    <span class="s0">// Test 5: Already sorted vector</span>
+    <span class="s1">vector</span><span class="s5">&lt;</span><span class="s4">int</span><span class="s5">&gt; </span><span class="s1">v5 </span><span class="s5">= {</span><span class="s6">1</span><span class="s5">, </span><span class="s6">2</span><span class="s5">, </span><span class="s6">3</span><span class="s5">, </span><span class="s6">4</span><span class="s5">, </span><span class="s6">5</span><span class="s5">};</span>
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Original array: &quot;</span><span class="s5">;</span>
+    <span class="s1">print</span><span class="s5">(</span><span class="s1">v5</span><span class="s5">);</span>
+
+    <span class="s1">sorter</span><span class="s5">.</span><span class="s1">quickSort</span><span class="s5">(</span><span class="s1">v5</span><span class="s5">, </span><span class="s6">0</span><span class="s5">, </span><span class="s1">v5</span><span class="s5">.</span><span class="s1">size</span><span class="s5">() - </span><span class="s6">1</span><span class="s5">);</span>
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Final sorted array: &quot;</span><span class="s5">;</span>
+    <span class="s1">print</span><span class="s5">(</span><span class="s1">v5</span><span class="s5">);</span>
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Expected: 1 2 3 4 5&quot; </span><span class="s5">&lt;&lt; </span><span class="s1">endl</span><span class="s5">;</span>
+
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Sorting using output of std::sort &quot; </span><span class="s5">&lt;&lt; </span><span class="s1">endl</span><span class="s5">; </span><span class="s0">//is the same</span>
+    <span class="s1">sort </span><span class="s5">(</span><span class="s1">v5</span><span class="s5">.</span><span class="s1">begin</span><span class="s5">(), </span><span class="s1">v5</span><span class="s5">.</span><span class="s1">end</span><span class="s5">());</span>
+    <span class="s4">for </span><span class="s5">(</span><span class="s4">int </span><span class="s5">&amp; </span><span class="s1">it </span><span class="s5">: </span><span class="s1">v5</span><span class="s5">){</span>
+        <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">' ' </span><span class="s5">&lt;&lt; </span><span class="s1">it</span><span class="s5">;</span>
+    <span class="s5">}</span>
+
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">'</span><span class="s4">\n</span><span class="s3">' </span><span class="s5">&lt;&lt; </span><span class="s1">endl</span><span class="s5">;</span>
+<span class="s5">}</span>
+
+<span class="s0">/** 
+ * Test Plan: 
+ * 
+ * 1) check if quick sort (with median of 3) works with a small number of integers in the vector 
+ * 2) check if quick sort (with median of 3) works with a large number of integers in the vector 
+ * 3) check how quick sort (with median of 3) deals with duplicates 
+ * 4) check how quick sort (with median of 3) deals with negative integers 
+ * 5) check how quick sort (with median of 3) deals with an already sorted vector 
+ * 
+ * @params: sorter- object to access the Sortings class 
+ * @returns: N/A, void function 
+ * dependency: quickSortMed() 
+ * */</span>
+<span class="s4">void </span><span class="s1">test_quicksortMed</span><span class="s5">(</span><span class="s1">Sortings</span><span class="s5">&amp; </span><span class="s1">sorter</span><span class="s5">) {</span>
+    <span class="s0">// Test 1: Small number of integers</span>
+    <span class="s1">vector</span><span class="s5">&lt;</span><span class="s4">int</span><span class="s5">&gt; </span><span class="s1">v1 </span><span class="s5">= {</span><span class="s6">1</span><span class="s5">, </span><span class="s6">7</span><span class="s5">, </span><span class="s6">6</span><span class="s5">, </span><span class="s6">12</span><span class="s5">};</span>
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Original array: &quot;</span><span class="s5">;</span>
+    <span class="s1">print</span><span class="s5">(</span><span class="s1">v1</span><span class="s5">);</span>
+
+    <span class="s1">sorter</span><span class="s5">.</span><span class="s1">quickSortMed</span><span class="s5">(</span><span class="s1">v1</span><span class="s5">, </span><span class="s6">0</span><span class="s5">, </span><span class="s1">v1</span><span class="s5">.</span><span class="s1">size</span><span class="s5">() - </span><span class="s6">1</span><span class="s5">);</span>
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Final sorted array: &quot;</span><span class="s5">;</span>
+    <span class="s1">print</span><span class="s5">(</span><span class="s1">v1</span><span class="s5">);</span>
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Expected: 1 6 7 12&quot; </span><span class="s5">&lt;&lt;</span><span class="s1">endl</span><span class="s5">;</span>
+
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Sorting using output of std::sort &quot; </span><span class="s5">&lt;&lt; </span><span class="s1">endl</span><span class="s5">; </span><span class="s0">//is the same</span>
+    <span class="s1">sort </span><span class="s5">(</span><span class="s1">v1</span><span class="s5">.</span><span class="s1">begin</span><span class="s5">(), </span><span class="s1">v1</span><span class="s5">.</span><span class="s1">end</span><span class="s5">());</span>
+    <span class="s4">for </span><span class="s5">(</span><span class="s4">int </span><span class="s5">&amp; </span><span class="s1">it </span><span class="s5">: </span><span class="s1">v1</span><span class="s5">){</span>
+        <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">' ' </span><span class="s5">&lt;&lt; </span><span class="s1">it</span><span class="s5">;</span>
+    <span class="s5">}</span>
+
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">'</span><span class="s4">\n</span><span class="s3">' </span><span class="s5">&lt;&lt; </span><span class="s1">endl</span><span class="s5">;</span>
+
+    <span class="s0">// Test 2: Large number of integers</span>
+    <span class="s1">vector</span><span class="s5">&lt;</span><span class="s4">int</span><span class="s5">&gt; </span><span class="s1">v2 </span><span class="s5">= {</span><span class="s6">1</span><span class="s5">, </span><span class="s6">8</span><span class="s5">, </span><span class="s6">19</span><span class="s5">, </span><span class="s6">12</span><span class="s5">, </span><span class="s6">67</span><span class="s5">, </span><span class="s6">89</span><span class="s5">, </span><span class="s6">96</span><span class="s5">, </span><span class="s6">120</span><span class="s5">, </span><span class="s6">13</span><span class="s5">, </span><span class="s6">77</span><span class="s5">, </span><span class="s6">2</span><span class="s5">, </span><span class="s6">9</span><span class="s5">};</span>
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Original array: &quot;</span><span class="s5">;</span>
+    <span class="s1">print</span><span class="s5">(</span><span class="s1">v2</span><span class="s5">);</span>
+
+    <span class="s1">sorter</span><span class="s5">.</span><span class="s1">quickSortMed</span><span class="s5">(</span><span class="s1">v2</span><span class="s5">, </span><span class="s6">0</span><span class="s5">, </span><span class="s1">v2</span><span class="s5">.</span><span class="s1">size</span><span class="s5">() - </span><span class="s6">1</span><span class="s5">);</span>
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Final sorted array: &quot;</span><span class="s5">;</span>
+    <span class="s1">print</span><span class="s5">(</span><span class="s1">v2</span><span class="s5">);</span>
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Expected: 1 2 8 9 12 13 19 67 77 89 96 120&quot; </span><span class="s5">&lt;&lt; </span><span class="s1">endl</span><span class="s5">;</span>
+
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Sorting using output of std::sort &quot; </span><span class="s5">&lt;&lt; </span><span class="s1">endl</span><span class="s5">; </span><span class="s0">//is the same</span>
+    <span class="s1">sort </span><span class="s5">(</span><span class="s1">v2</span><span class="s5">.</span><span class="s1">begin</span><span class="s5">(), </span><span class="s1">v2</span><span class="s5">.</span><span class="s1">end</span><span class="s5">());</span>
+    <span class="s4">for </span><span class="s5">(</span><span class="s4">int </span><span class="s5">&amp; </span><span class="s1">it </span><span class="s5">: </span><span class="s1">v2</span><span class="s5">){</span>
+        <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">' ' </span><span class="s5">&lt;&lt; </span><span class="s1">it</span><span class="s5">;</span>
+    <span class="s5">}</span>
+
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">'</span><span class="s4">\n</span><span class="s3">' </span><span class="s5">&lt;&lt; </span><span class="s1">endl</span><span class="s5">;</span>
+
+    <span class="s0">// Test 3: Handling duplicates</span>
+    <span class="s1">vector</span><span class="s5">&lt;</span><span class="s4">int</span><span class="s5">&gt; </span><span class="s1">v3 </span><span class="s5">= {</span><span class="s6">1</span><span class="s5">, </span><span class="s6">7</span><span class="s5">, </span><span class="s6">12</span><span class="s5">, </span><span class="s6">19</span><span class="s5">, </span><span class="s6">7</span><span class="s5">, </span><span class="s6">65</span><span class="s5">, </span><span class="s6">16</span><span class="s5">};</span>
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Original array: &quot;</span><span class="s5">;</span>
+    <span class="s1">print</span><span class="s5">(</span><span class="s1">v3</span><span class="s5">);</span>
+
+    <span class="s1">sorter</span><span class="s5">.</span><span class="s1">quickSortMed</span><span class="s5">(</span><span class="s1">v3</span><span class="s5">, </span><span class="s6">0</span><span class="s5">, </span><span class="s1">v3</span><span class="s5">.</span><span class="s1">size</span><span class="s5">() - </span><span class="s6">1</span><span class="s5">);</span>
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Final sorted array: &quot;</span><span class="s5">;</span>
+    <span class="s1">print</span><span class="s5">(</span><span class="s1">v3</span><span class="s5">);</span>
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Expected: 1 7 7 12 16 19 65&quot; </span><span class="s5">&lt;&lt; </span><span class="s1">endl</span><span class="s5">;</span>
+
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Sorting using output of std::sort &quot; </span><span class="s5">&lt;&lt; </span><span class="s1">endl</span><span class="s5">; </span><span class="s0">//is the same</span>
+    <span class="s1">sort </span><span class="s5">(</span><span class="s1">v3</span><span class="s5">.</span><span class="s1">begin</span><span class="s5">(), </span><span class="s1">v3</span><span class="s5">.</span><span class="s1">end</span><span class="s5">());</span>
+    <span class="s4">for </span><span class="s5">(</span><span class="s4">int </span><span class="s5">&amp; </span><span class="s1">it </span><span class="s5">: </span><span class="s1">v3</span><span class="s5">){</span>
+        <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">' ' </span><span class="s5">&lt;&lt; </span><span class="s1">it</span><span class="s5">;</span>
+    <span class="s5">}</span>
+
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">'</span><span class="s4">\n</span><span class="s3">' </span><span class="s5">&lt;&lt; </span><span class="s1">endl</span><span class="s5">;</span>
+
+    <span class="s0">// Test 4: Negative integers</span>
+    <span class="s1">vector</span><span class="s5">&lt;</span><span class="s4">int</span><span class="s5">&gt; </span><span class="s1">v4 </span><span class="s5">= {-</span><span class="s6">3</span><span class="s5">, -</span><span class="s6">1</span><span class="s5">, -</span><span class="s6">7</span><span class="s5">, </span><span class="s6">4</span><span class="s5">, </span><span class="s6">0</span><span class="s5">, -</span><span class="s6">2</span><span class="s5">};</span>
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Original array: &quot;</span><span class="s5">;</span>
+    <span class="s1">print</span><span class="s5">(</span><span class="s1">v4</span><span class="s5">);</span>
+
+    <span class="s1">sorter</span><span class="s5">.</span><span class="s1">quickSortMed</span><span class="s5">(</span><span class="s1">v4</span><span class="s5">, </span><span class="s6">0</span><span class="s5">, </span><span class="s1">v4</span><span class="s5">.</span><span class="s1">size</span><span class="s5">() - </span><span class="s6">1</span><span class="s5">);</span>
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Final sorted array: &quot;</span><span class="s5">;</span>
+    <span class="s1">print</span><span class="s5">(</span><span class="s1">v4</span><span class="s5">);</span>
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Expected: -7 -3 -2 -1 0 4&quot; </span><span class="s5">&lt;&lt; </span><span class="s1">endl</span><span class="s5">;</span>
+
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Sorting using output of std::sort &quot; </span><span class="s5">&lt;&lt; </span><span class="s1">endl</span><span class="s5">; </span><span class="s0">//is the same</span>
+    <span class="s1">sort </span><span class="s5">(</span><span class="s1">v4</span><span class="s5">.</span><span class="s1">begin</span><span class="s5">(), </span><span class="s1">v4</span><span class="s5">.</span><span class="s1">end</span><span class="s5">());</span>
+    <span class="s4">for </span><span class="s5">(</span><span class="s4">int </span><span class="s5">&amp; </span><span class="s1">it </span><span class="s5">: </span><span class="s1">v4</span><span class="s5">){</span>
+        <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">' ' </span><span class="s5">&lt;&lt; </span><span class="s1">it</span><span class="s5">;</span>
+    <span class="s5">}</span>
+
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">'</span><span class="s4">\n</span><span class="s3">' </span><span class="s5">&lt;&lt; </span><span class="s1">endl</span><span class="s5">;</span>
+
+    <span class="s0">// Test 5: Already sorted vector</span>
+    <span class="s1">vector</span><span class="s5">&lt;</span><span class="s4">int</span><span class="s5">&gt; </span><span class="s1">v5 </span><span class="s5">= {</span><span class="s6">1</span><span class="s5">, </span><span class="s6">2</span><span class="s5">, </span><span class="s6">3</span><span class="s5">, </span><span class="s6">4</span><span class="s5">, </span><span class="s6">5</span><span class="s5">};</span>
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Original array: &quot;</span><span class="s5">;</span>
+    <span class="s1">print</span><span class="s5">(</span><span class="s1">v5</span><span class="s5">);</span>
+
+    <span class="s1">sorter</span><span class="s5">.</span><span class="s1">quickSortMed</span><span class="s5">(</span><span class="s1">v5</span><span class="s5">, </span><span class="s6">0</span><span class="s5">, </span><span class="s1">v5</span><span class="s5">.</span><span class="s1">size</span><span class="s5">() - </span><span class="s6">1</span><span class="s5">);</span>
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Final sorted array: &quot;</span><span class="s5">;</span>
+    <span class="s1">print</span><span class="s5">(</span><span class="s1">v5</span><span class="s5">);</span>
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Expected: 1 2 3 4 5&quot; </span><span class="s5">&lt;&lt; </span><span class="s1">endl</span><span class="s5">;</span>
+
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Sorting using output of std::sort &quot; </span><span class="s5">&lt;&lt; </span><span class="s1">endl</span><span class="s5">; </span><span class="s0">//is the same</span>
+    <span class="s1">sort </span><span class="s5">(</span><span class="s1">v5</span><span class="s5">.</span><span class="s1">begin</span><span class="s5">(), </span><span class="s1">v5</span><span class="s5">.</span><span class="s1">end</span><span class="s5">());</span>
+    <span class="s4">for </span><span class="s5">(</span><span class="s4">int </span><span class="s5">&amp; </span><span class="s1">it </span><span class="s5">: </span><span class="s1">v5</span><span class="s5">){</span>
+        <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">' ' </span><span class="s5">&lt;&lt; </span><span class="s1">it</span><span class="s5">;</span>
+    <span class="s5">}</span>
+
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">'</span><span class="s4">\n</span><span class="s3">' </span><span class="s5">&lt;&lt; </span><span class="s1">endl</span><span class="s5">;</span>
+<span class="s5">}</span>
+
+<span class="s0">/** 
+ * Test Plan: 
+ * 
+ * 1) check if count sort works with a small number of integers in the vector 
+ * 2) check if count sort works with a large number of integers in the vector 
+ * 3) check how count sort deals with duplicates 
+ * 4) check how count sort deals with negative integers 
+ * 5) check how count sort deals with an already sorted vector 
+ * 
+ * @params: sorter- object to access the Sortings class 
+ * @returns: N/A, void function 
+ * dependency: countSort() 
+ * */</span>
+<span class="s4">void </span><span class="s1">test_count</span><span class="s5">(</span><span class="s1">Sortings</span><span class="s5">&amp; </span><span class="s1">sorter</span><span class="s5">){</span>
+    <span class="s0">// Test 1: Small number of integers</span>
+    <span class="s1">vector</span><span class="s5">&lt;</span><span class="s4">int</span><span class="s5">&gt; </span><span class="s1">v1 </span><span class="s5">= {</span><span class="s6">7</span><span class="s5">, </span><span class="s6">2</span><span class="s5">, </span><span class="s6">5</span><span class="s5">, </span><span class="s6">3</span><span class="s5">};</span>
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Original array: &quot;</span><span class="s5">;</span>
+    <span class="s1">print</span><span class="s5">(</span><span class="s1">v1</span><span class="s5">);</span>
+
+    <span class="s1">sorter</span><span class="s5">.</span><span class="s1">countSort</span><span class="s5">(</span><span class="s1">v1</span><span class="s5">);</span>
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Sorted array: &quot;</span><span class="s5">;</span>
+    <span class="s1">print</span><span class="s5">(</span><span class="s1">v1</span><span class="s5">);</span>
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Expected: 2 3 5 7&quot; </span><span class="s5">&lt;&lt; </span><span class="s1">endl</span><span class="s5">;</span>
+
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Sorting using output of std::sort &quot; </span><span class="s5">&lt;&lt; </span><span class="s1">endl</span><span class="s5">; </span><span class="s0">//is the same</span>
+    <span class="s1">sort </span><span class="s5">(</span><span class="s1">v1</span><span class="s5">.</span><span class="s1">begin</span><span class="s5">(), </span><span class="s1">v1</span><span class="s5">.</span><span class="s1">end</span><span class="s5">());</span>
+    <span class="s4">for </span><span class="s5">(</span><span class="s4">int </span><span class="s5">&amp; </span><span class="s1">it </span><span class="s5">: </span><span class="s1">v1</span><span class="s5">){</span>
+        <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">' ' </span><span class="s5">&lt;&lt; </span><span class="s1">it</span><span class="s5">;</span>
+    <span class="s5">}</span>
+
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">'</span><span class="s4">\n</span><span class="s3">' </span><span class="s5">&lt;&lt; </span><span class="s1">endl</span><span class="s5">;</span>
+
+    <span class="s0">// Test 2: Large number of integers</span>
+    <span class="s1">vector</span><span class="s5">&lt;</span><span class="s4">int</span><span class="s5">&gt; </span><span class="s1">v2 </span><span class="s5">= {</span><span class="s6">15</span><span class="s5">, </span><span class="s6">3</span><span class="s5">, </span><span class="s6">12</span><span class="s5">, </span><span class="s6">6</span><span class="s5">, </span><span class="s6">9</span><span class="s5">, </span><span class="s6">17</span><span class="s5">, </span><span class="s6">5</span><span class="s5">, </span><span class="s6">20</span><span class="s5">, </span><span class="s6">8</span><span class="s5">, </span><span class="s6">2</span><span class="s5">, </span><span class="s6">10</span><span class="s5">, </span><span class="s6">1</span><span class="s5">};</span>
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Original array: &quot;</span><span class="s5">;</span>
+    <span class="s1">print</span><span class="s5">(</span><span class="s1">v2</span><span class="s5">);</span>
+
+    <span class="s1">sorter</span><span class="s5">.</span><span class="s1">countSort</span><span class="s5">(</span><span class="s1">v2</span><span class="s5">);</span>
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Sorted array: &quot;</span><span class="s5">;</span>
+    <span class="s1">print</span><span class="s5">(</span><span class="s1">v2</span><span class="s5">);</span>
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Expected: 1 2 3 5 6 8 9 10 12 15 17 20&quot; </span><span class="s5">&lt;&lt; </span><span class="s1">endl</span><span class="s5">;</span>
+
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Sorting using output of std::sort &quot; </span><span class="s5">&lt;&lt; </span><span class="s1">endl</span><span class="s5">; </span><span class="s0">//is the same</span>
+    <span class="s1">sort </span><span class="s5">(</span><span class="s1">v2</span><span class="s5">.</span><span class="s1">begin</span><span class="s5">(), </span><span class="s1">v2</span><span class="s5">.</span><span class="s1">end</span><span class="s5">());</span>
+    <span class="s4">for </span><span class="s5">(</span><span class="s4">int </span><span class="s5">&amp; </span><span class="s1">it </span><span class="s5">: </span><span class="s1">v2</span><span class="s5">){</span>
+        <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">' ' </span><span class="s5">&lt;&lt; </span><span class="s1">it</span><span class="s5">;</span>
+    <span class="s5">}</span>
+
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">'</span><span class="s4">\n</span><span class="s3">' </span><span class="s5">&lt;&lt; </span><span class="s1">endl</span><span class="s5">;</span>
+
+    <span class="s0">// Test 3: Handling duplicates</span>
+    <span class="s1">vector</span><span class="s5">&lt;</span><span class="s4">int</span><span class="s5">&gt; </span><span class="s1">v3 </span><span class="s5">= {</span><span class="s6">4</span><span class="s5">, </span><span class="s6">2</span><span class="s5">, </span><span class="s6">7</span><span class="s5">, </span><span class="s6">7</span><span class="s5">, </span><span class="s6">3</span><span class="s5">, </span><span class="s6">4</span><span class="s5">, </span><span class="s6">1</span><span class="s5">};</span>
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Original array: &quot;</span><span class="s5">;</span>
+    <span class="s1">print</span><span class="s5">(</span><span class="s1">v3</span><span class="s5">);</span>
+
+    <span class="s1">sorter</span><span class="s5">.</span><span class="s1">countSort</span><span class="s5">(</span><span class="s1">v3</span><span class="s5">);</span>
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Sorted array: &quot;</span><span class="s5">;</span>
+    <span class="s1">print</span><span class="s5">(</span><span class="s1">v3</span><span class="s5">);</span>
+    <span class="s1">cout</span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Expected: 1 2 3 4 4 7 7&quot; </span><span class="s5">&lt;&lt; </span><span class="s1">endl</span><span class="s5">;</span>
+
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Sorting using output of std::sort &quot; </span><span class="s5">&lt;&lt; </span><span class="s1">endl</span><span class="s5">; </span><span class="s0">//is the same</span>
+    <span class="s1">sort </span><span class="s5">(</span><span class="s1">v3</span><span class="s5">.</span><span class="s1">begin</span><span class="s5">(), </span><span class="s1">v3</span><span class="s5">.</span><span class="s1">end</span><span class="s5">());</span>
+    <span class="s4">for </span><span class="s5">(</span><span class="s4">int </span><span class="s5">&amp; </span><span class="s1">it </span><span class="s5">: </span><span class="s1">v3</span><span class="s5">){</span>
+        <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">' ' </span><span class="s5">&lt;&lt; </span><span class="s1">it</span><span class="s5">;</span>
+    <span class="s5">}</span>
+
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">'</span><span class="s4">\n</span><span class="s3">' </span><span class="s5">&lt;&lt; </span><span class="s1">endl</span><span class="s5">;</span>
+
+    <span class="s0">// Test 4: Negative integers</span>
+    <span class="s1">vector</span><span class="s5">&lt;</span><span class="s4">int</span><span class="s5">&gt; </span><span class="s1">v4 </span><span class="s5">= {-</span><span class="s6">5</span><span class="s5">, -</span><span class="s6">2</span><span class="s5">, -</span><span class="s6">8</span><span class="s5">, </span><span class="s6">3</span><span class="s5">, </span><span class="s6">0</span><span class="s5">, -</span><span class="s6">1</span><span class="s5">};</span>
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Original array: &quot;</span><span class="s5">;</span>
+    <span class="s1">print</span><span class="s5">(</span><span class="s1">v4</span><span class="s5">);</span>
+
+    <span class="s1">sorter</span><span class="s5">.</span><span class="s1">countSort</span><span class="s5">(</span><span class="s1">v4</span><span class="s5">);</span>
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Sorted array: &quot;</span><span class="s5">;</span>
+    <span class="s1">print</span><span class="s5">(</span><span class="s1">v4</span><span class="s5">);</span>
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Expected: -8 -5 -2 -1 0 3&quot; </span><span class="s5">&lt;&lt; </span><span class="s1">endl</span><span class="s5">;</span>
+
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Sorting using output of std::sort &quot; </span><span class="s5">&lt;&lt; </span><span class="s1">endl</span><span class="s5">; </span><span class="s0">//is the same</span>
+    <span class="s1">sort </span><span class="s5">(</span><span class="s1">v4</span><span class="s5">.</span><span class="s1">begin</span><span class="s5">(), </span><span class="s1">v4</span><span class="s5">.</span><span class="s1">end</span><span class="s5">());</span>
+    <span class="s4">for </span><span class="s5">(</span><span class="s4">int </span><span class="s5">&amp; </span><span class="s1">it </span><span class="s5">: </span><span class="s1">v4</span><span class="s5">){</span>
+        <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">' ' </span><span class="s5">&lt;&lt; </span><span class="s1">it</span><span class="s5">;</span>
+    <span class="s5">}</span>
+
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">'</span><span class="s4">\n</span><span class="s3">' </span><span class="s5">&lt;&lt; </span><span class="s1">endl</span><span class="s5">;</span>
+
+    <span class="s0">// Test 5: Already sorted vector</span>
+    <span class="s1">vector</span><span class="s5">&lt;</span><span class="s4">int</span><span class="s5">&gt; </span><span class="s1">v5 </span><span class="s5">= {</span><span class="s6">1</span><span class="s5">, </span><span class="s6">2</span><span class="s5">, </span><span class="s6">3</span><span class="s5">, </span><span class="s6">4</span><span class="s5">, </span><span class="s6">5</span><span class="s5">};</span>
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Original array: &quot;</span><span class="s5">;</span>
+    <span class="s1">print</span><span class="s5">(</span><span class="s1">v5</span><span class="s5">);</span>
+
+    <span class="s1">sorter</span><span class="s5">.</span><span class="s1">countSort</span><span class="s5">(</span><span class="s1">v5</span><span class="s5">);</span>
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Sorted array: &quot;</span><span class="s5">;</span>
+    <span class="s1">print</span><span class="s5">(</span><span class="s1">v5</span><span class="s5">);</span>
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Expected: 1 2 3 4 5&quot; </span><span class="s5">&lt;&lt; </span><span class="s1">endl</span><span class="s5">;</span>
+
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Sorting using output of std::sort &quot; </span><span class="s5">&lt;&lt; </span><span class="s1">endl</span><span class="s5">; </span><span class="s0">//is the same</span>
+    <span class="s1">sort </span><span class="s5">(</span><span class="s1">v5</span><span class="s5">.</span><span class="s1">begin</span><span class="s5">(), </span><span class="s1">v5</span><span class="s5">.</span><span class="s1">end</span><span class="s5">());</span>
+    <span class="s4">for </span><span class="s5">(</span><span class="s4">int </span><span class="s5">&amp; </span><span class="s1">it </span><span class="s5">: </span><span class="s1">v5</span><span class="s5">){</span>
+        <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">' ' </span><span class="s5">&lt;&lt; </span><span class="s1">it</span><span class="s5">;</span>
+    <span class="s5">}</span>
+
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">'</span><span class="s4">\n</span><span class="s3">' </span><span class="s5">&lt;&lt; </span><span class="s1">endl</span><span class="s5">;</span>
+<span class="s5">}</span>
+
+<span class="s0">/** 
+ * Test Plan: 
+ * 
+ * 1) check if heap sort works with a small number of integers in the vector 
+ * 2) check if heap sort works with a large number of integers in the vector 
+ * 3) check how heap sort deals with duplicates 
+ * 4) check how heap sort deals with negative integers 
+ * 5) check how heap sort deals with an already sorted vector 
+ * 
+ * @params: sorter- object to access the Sortings class 
+ * @returns: N/A, void function 
+ * dependency: heapSort() 
+ * 
+ * */</span>
+<span class="s4">void </span><span class="s1">test_heap</span><span class="s5">(</span><span class="s1">Sortings</span><span class="s5">&amp; </span><span class="s1">sorter</span><span class="s5">){</span>
+    <span class="s0">// Test 1: Small number of integers</span>
+    <span class="s1">vector</span><span class="s5">&lt;</span><span class="s4">int</span><span class="s5">&gt; </span><span class="s1">v1 </span><span class="s5">= {</span><span class="s6">7</span><span class="s5">, </span><span class="s6">2</span><span class="s5">, </span><span class="s6">5</span><span class="s5">, </span><span class="s6">3</span><span class="s5">};</span>
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Original array: &quot;</span><span class="s5">;</span>
+    <span class="s1">print</span><span class="s5">(</span><span class="s1">v1</span><span class="s5">);</span>
+
+    <span class="s1">sorter</span><span class="s5">.</span><span class="s1">heapSort</span><span class="s5">(</span><span class="s1">v1</span><span class="s5">);</span>
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Sorted array: &quot;</span><span class="s5">;</span>
+    <span class="s1">print</span><span class="s5">(</span><span class="s1">v1</span><span class="s5">);</span>
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Expected: 2 3 5 7&quot; </span><span class="s5">&lt;&lt; </span><span class="s1">endl</span><span class="s5">;</span>
+
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Sorting using output of std::sort &quot; </span><span class="s5">&lt;&lt; </span><span class="s1">endl</span><span class="s5">; </span><span class="s0">//is the same</span>
+    <span class="s1">sort </span><span class="s5">(</span><span class="s1">v1</span><span class="s5">.</span><span class="s1">begin</span><span class="s5">(), </span><span class="s1">v1</span><span class="s5">.</span><span class="s1">end</span><span class="s5">());</span>
+    <span class="s4">for </span><span class="s5">(</span><span class="s4">int </span><span class="s5">&amp; </span><span class="s1">it </span><span class="s5">: </span><span class="s1">v1</span><span class="s5">){</span>
+        <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">' ' </span><span class="s5">&lt;&lt; </span><span class="s1">it</span><span class="s5">;</span>
+    <span class="s5">}</span>
+
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">'</span><span class="s4">\n</span><span class="s3">' </span><span class="s5">&lt;&lt; </span><span class="s1">endl</span><span class="s5">;</span>
+
+    <span class="s0">// Test 2: Large number of integers</span>
+    <span class="s1">vector</span><span class="s5">&lt;</span><span class="s4">int</span><span class="s5">&gt; </span><span class="s1">v2 </span><span class="s5">= {</span><span class="s6">15</span><span class="s5">, </span><span class="s6">3</span><span class="s5">, </span><span class="s6">12</span><span class="s5">, </span><span class="s6">6</span><span class="s5">, </span><span class="s6">9</span><span class="s5">, </span><span class="s6">17</span><span class="s5">, </span><span class="s6">5</span><span class="s5">, </span><span class="s6">20</span><span class="s5">, </span><span class="s6">8</span><span class="s5">, </span><span class="s6">2</span><span class="s5">, </span><span class="s6">10</span><span class="s5">, </span><span class="s6">1</span><span class="s5">};</span>
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Original array: &quot;</span><span class="s5">;</span>
+    <span class="s1">print</span><span class="s5">(</span><span class="s1">v2</span><span class="s5">);</span>
+
+    <span class="s1">sorter</span><span class="s5">.</span><span class="s1">heapSort</span><span class="s5">(</span><span class="s1">v2</span><span class="s5">);</span>
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Sorted array: &quot;</span><span class="s5">;</span>
+    <span class="s1">print</span><span class="s5">(</span><span class="s1">v2</span><span class="s5">);</span>
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Expected: 1 2 3 5 6 8 9 10 12 15 17 20&quot; </span><span class="s5">&lt;&lt; </span><span class="s1">endl</span><span class="s5">;</span>
+
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Sorting using output of std::sort &quot; </span><span class="s5">&lt;&lt; </span><span class="s1">endl</span><span class="s5">; </span><span class="s0">//is the same</span>
+    <span class="s1">sort </span><span class="s5">(</span><span class="s1">v2</span><span class="s5">.</span><span class="s1">begin</span><span class="s5">(), </span><span class="s1">v2</span><span class="s5">.</span><span class="s1">end</span><span class="s5">());</span>
+    <span class="s4">for </span><span class="s5">(</span><span class="s4">int </span><span class="s5">&amp; </span><span class="s1">it </span><span class="s5">: </span><span class="s1">v2</span><span class="s5">){</span>
+        <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">' ' </span><span class="s5">&lt;&lt; </span><span class="s1">it</span><span class="s5">;</span>
+    <span class="s5">}</span>
+
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">'</span><span class="s4">\n</span><span class="s3">' </span><span class="s5">&lt;&lt; </span><span class="s1">endl</span><span class="s5">;</span>
+
+    <span class="s0">// Test 3: Handling duplicates</span>
+    <span class="s1">vector</span><span class="s5">&lt;</span><span class="s4">int</span><span class="s5">&gt; </span><span class="s1">v3 </span><span class="s5">= {</span><span class="s6">4</span><span class="s5">, </span><span class="s6">2</span><span class="s5">, </span><span class="s6">7</span><span class="s5">, </span><span class="s6">7</span><span class="s5">, </span><span class="s6">3</span><span class="s5">, </span><span class="s6">4</span><span class="s5">, </span><span class="s6">1</span><span class="s5">};</span>
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Original array: &quot;</span><span class="s5">;</span>
+    <span class="s1">print</span><span class="s5">(</span><span class="s1">v3</span><span class="s5">);</span>
+
+    <span class="s1">sorter</span><span class="s5">.</span><span class="s1">heapSort</span><span class="s5">(</span><span class="s1">v3</span><span class="s5">);</span>
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Sorted array: &quot;</span><span class="s5">;</span>
+    <span class="s1">print</span><span class="s5">(</span><span class="s1">v3</span><span class="s5">);</span>
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Expected: 1 2 3 4 4 7 7&quot; </span><span class="s5">&lt;&lt; </span><span class="s1">endl</span><span class="s5">;</span>
+
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Sorting using output of std::sort &quot; </span><span class="s5">&lt;&lt; </span><span class="s1">endl</span><span class="s5">; </span><span class="s0">//is the same</span>
+    <span class="s1">sort </span><span class="s5">(</span><span class="s1">v3</span><span class="s5">.</span><span class="s1">begin</span><span class="s5">(), </span><span class="s1">v3</span><span class="s5">.</span><span class="s1">end</span><span class="s5">());</span>
+    <span class="s4">for </span><span class="s5">(</span><span class="s4">int </span><span class="s5">&amp; </span><span class="s1">it </span><span class="s5">: </span><span class="s1">v3</span><span class="s5">){</span>
+        <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">' ' </span><span class="s5">&lt;&lt; </span><span class="s1">it</span><span class="s5">;</span>
+    <span class="s5">}</span>
+
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">'</span><span class="s4">\n</span><span class="s3">' </span><span class="s5">&lt;&lt; </span><span class="s1">endl</span><span class="s5">;</span>
+
+    <span class="s0">// Test 4: Negative integers</span>
+    <span class="s1">vector</span><span class="s5">&lt;</span><span class="s4">int</span><span class="s5">&gt; </span><span class="s1">v4 </span><span class="s5">= {-</span><span class="s6">5</span><span class="s5">, -</span><span class="s6">2</span><span class="s5">, -</span><span class="s6">8</span><span class="s5">, </span><span class="s6">3</span><span class="s5">, </span><span class="s6">0</span><span class="s5">, -</span><span class="s6">1</span><span class="s5">};</span>
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Original array: &quot;</span><span class="s5">;</span>
+    <span class="s1">print</span><span class="s5">(</span><span class="s1">v4</span><span class="s5">);</span>
+
+    <span class="s1">sorter</span><span class="s5">.</span><span class="s1">heapSort</span><span class="s5">(</span><span class="s1">v4</span><span class="s5">);</span>
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Sorted array: &quot;</span><span class="s5">;</span>
+    <span class="s1">print</span><span class="s5">(</span><span class="s1">v4</span><span class="s5">);</span>
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Expected: -8 -5 -2 -1 0 3&quot; </span><span class="s5">&lt;&lt; </span><span class="s1">endl</span><span class="s5">;</span>
+
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Sorting using output of std::sort &quot; </span><span class="s5">&lt;&lt; </span><span class="s1">endl</span><span class="s5">; </span><span class="s0">//is the same</span>
+    <span class="s1">sort </span><span class="s5">(</span><span class="s1">v4</span><span class="s5">.</span><span class="s1">begin</span><span class="s5">(), </span><span class="s1">v4</span><span class="s5">.</span><span class="s1">end</span><span class="s5">());</span>
+    <span class="s4">for </span><span class="s5">(</span><span class="s4">int </span><span class="s5">&amp; </span><span class="s1">it </span><span class="s5">: </span><span class="s1">v4</span><span class="s5">){</span>
+        <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">' ' </span><span class="s5">&lt;&lt; </span><span class="s1">it</span><span class="s5">;</span>
+    <span class="s5">}</span>
+
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">'</span><span class="s4">\n</span><span class="s3">' </span><span class="s5">&lt;&lt; </span><span class="s1">endl</span><span class="s5">;</span>
+
+    <span class="s0">// Test 5: Already sorted vector</span>
+    <span class="s1">vector</span><span class="s5">&lt;</span><span class="s4">int</span><span class="s5">&gt; </span><span class="s1">v5 </span><span class="s5">= {</span><span class="s6">1</span><span class="s5">, </span><span class="s6">2</span><span class="s5">, </span><span class="s6">3</span><span class="s5">, </span><span class="s6">4</span><span class="s5">, </span><span class="s6">5</span><span class="s5">};</span>
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Original array: &quot;</span><span class="s5">;</span>
+    <span class="s1">print</span><span class="s5">(</span><span class="s1">v5</span><span class="s5">);</span>
+
+    <span class="s1">sorter</span><span class="s5">.</span><span class="s1">heapSort</span><span class="s5">(</span><span class="s1">v5</span><span class="s5">);</span>
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Sorted array: &quot;</span><span class="s5">;</span>
+    <span class="s1">print</span><span class="s5">(</span><span class="s1">v5</span><span class="s5">);</span>
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Expected: 1 2 3 4 5&quot; </span><span class="s5">&lt;&lt; </span><span class="s1">endl</span><span class="s5">;</span>
+
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Sorting using output of std::sort &quot; </span><span class="s5">&lt;&lt; </span><span class="s1">endl</span><span class="s5">; </span><span class="s0">//is the same</span>
+    <span class="s1">sort </span><span class="s5">(</span><span class="s1">v5</span><span class="s5">.</span><span class="s1">begin</span><span class="s5">(), </span><span class="s1">v5</span><span class="s5">.</span><span class="s1">end</span><span class="s5">());</span>
+    <span class="s4">for </span><span class="s5">(</span><span class="s4">int </span><span class="s5">&amp; </span><span class="s1">it </span><span class="s5">: </span><span class="s1">v5</span><span class="s5">){</span>
+        <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">' ' </span><span class="s5">&lt;&lt; </span><span class="s1">it</span><span class="s5">;</span>
+    <span class="s5">}</span>
+
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">'</span><span class="s4">\n</span><span class="s3">' </span><span class="s5">&lt;&lt; </span><span class="s1">endl</span><span class="s5">;</span>
+<span class="s5">}</span>
+
+
+<span class="s0">//TESTING EFFICIENCY OF SORTING ALGORITHMS</span>
+
+<span class="s0">/** 
+ * Reads data from a file and returns a vector of integers. 
+ * @param filename - Name of the file to read from. 
+ * @return A vector containing the integers read from the file. 
+ */</span>
+<span class="s1">vector</span><span class="s5">&lt;</span><span class="s4">int</span><span class="s5">&gt; </span><span class="s1">readfile</span><span class="s5">(</span><span class="s4">const </span><span class="s1">string </span><span class="s5">&amp;</span><span class="s1">filename</span><span class="s5">) {</span>
+    <span class="s1">ifstream infile</span><span class="s5">(</span><span class="s1">filename</span><span class="s5">);</span>
+    <span class="s1">vector</span><span class="s5">&lt;</span><span class="s4">int</span><span class="s5">&gt; </span><span class="s1">data</span><span class="s5">;</span>
+
+    <span class="s4">if </span><span class="s5">(!</span><span class="s1">infile</span><span class="s5">.</span><span class="s1">is_open</span><span class="s5">()) {</span>
+        <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Error: Could not open file &quot; </span><span class="s5">&lt;&lt; </span><span class="s1">filename </span><span class="s5">&lt;&lt; </span><span class="s1">endl</span><span class="s5">;</span>
+            <span class="s4">return </span><span class="s5">{};</span>
+        <span class="s5">}</span>
+
+    <span class="s1">string number</span><span class="s5">;</span>
+    <span class="s4">while </span><span class="s5">(</span><span class="s1">getline</span><span class="s5">(</span><span class="s1">infile</span><span class="s5">, </span><span class="s1">number</span><span class="s5">)) {</span>
+        <span class="s1">data</span><span class="s5">.</span><span class="s1">push_back</span><span class="s5">(</span><span class="s1">stoi</span><span class="s5">(</span><span class="s1">number</span><span class="s5">));</span>
+    <span class="s5">}</span>
+
+    <span class="s1">infile</span><span class="s5">.</span><span class="s1">close</span><span class="s5">();</span>
+    <span class="s4">return </span><span class="s1">data</span><span class="s5">;</span>
+<span class="s5">}</span>
+
+<span class="s0">/** 
+ * Writes data to an output file. 
+ * @param filename - Name of the file to write to. 
+ * @param data - Vector of integers to write to the file. 
+ */</span>
+<span class="s4">void </span><span class="s1">writefile</span><span class="s5">(</span><span class="s1">string filename</span><span class="s5">, </span><span class="s4">const </span><span class="s1">vector</span><span class="s5">&lt;</span><span class="s4">int</span><span class="s5">&gt;&amp; </span><span class="s1">data</span><span class="s5">) {</span>
+    <span class="s1">ofstream outfile</span><span class="s5">(</span><span class="s1">filename</span><span class="s5">);</span>
+
+    <span class="s4">if </span><span class="s5">(!</span><span class="s1">outfile</span><span class="s5">) {</span>
+        <span class="s1">cerr </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Error: Could not open file &quot; </span><span class="s5">&lt;&lt; </span><span class="s1">filename </span><span class="s5">&lt;&lt; </span><span class="s3">&quot; for writing.&quot; </span><span class="s5">&lt;&lt; </span><span class="s1">endl</span><span class="s5">;</span>
+        <span class="s4">return</span><span class="s5">;</span>
+    <span class="s5">}</span>
+
+    <span class="s4">for </span><span class="s5">(</span><span class="s1">size_t i </span><span class="s5">= </span><span class="s6">0</span><span class="s5">; </span><span class="s1">i </span><span class="s5">&lt; </span><span class="s1">data</span><span class="s5">.</span><span class="s1">size</span><span class="s5">(); ++</span><span class="s1">i</span><span class="s5">) {</span>
+        <span class="s1">outfile </span><span class="s5">&lt;&lt; </span><span class="s1">data</span><span class="s5">[</span><span class="s1">i</span><span class="s5">];</span>
+        <span class="s4">if </span><span class="s5">(</span><span class="s1">i </span><span class="s5">!= </span><span class="s1">data</span><span class="s5">.</span><span class="s1">size</span><span class="s5">() - </span><span class="s6">1</span><span class="s5">) {</span>
+            <span class="s1">outfile </span><span class="s5">&lt;&lt; </span><span class="s3">&quot; &quot;</span><span class="s5">;</span>
+        <span class="s5">}</span>
+    <span class="s5">}</span>
+
+    <span class="s1">outfile</span><span class="s5">.</span><span class="s1">close</span><span class="s5">();</span>
+<span class="s5">}</span>
+
+<span class="s0">/** test insertion sort on various files and receive how long the computation time was 
+ * @params: sorter- object to access the Sortings class 
+ * @returns: N/A, void function 
+ * dependency- insertionSort() 
+ * */</span>
+<span class="s4">void </span><span class="s1">test_file_insertion</span><span class="s5">(</span><span class="s1">Sortings</span><span class="s5">&amp; </span><span class="s1">sorter</span><span class="s5">, </span><span class="s1">string filename</span><span class="s5">) {</span>
+    <span class="s1">vector</span><span class="s5">&lt;</span><span class="s4">int</span><span class="s5">&gt; </span><span class="s1">v </span><span class="s5">= </span><span class="s1">readfile</span><span class="s5">(</span><span class="s1">filename</span><span class="s5">);</span>
+
+    <span class="s4">if </span><span class="s5">(</span><span class="s1">v</span><span class="s5">.</span><span class="s1">empty</span><span class="s5">()) {</span>
+        <span class="s1">cerr </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Error: No data read from the file or file is empty.&quot; </span><span class="s5">&lt;&lt; </span><span class="s1">endl</span><span class="s5">;</span>
+        <span class="s4">return</span><span class="s5">;</span>
+    <span class="s5">}</span>
+
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Original Array: &quot; </span><span class="s5">&lt;&lt; </span><span class="s1">endl</span><span class="s5">;</span>
+    <span class="s1">print</span><span class="s5">(</span><span class="s1">v</span><span class="s5">);</span>
+
+    <span class="s1">vector</span><span class="s5">&lt;</span><span class="s4">int</span><span class="s5">&gt; </span><span class="s1">v_insertion </span><span class="s5">= </span><span class="s1">v</span><span class="s5">;</span>
+
+    <span class="s4">auto </span><span class="s1">startInsertion </span><span class="s5">= </span><span class="s1">chrono</span><span class="s5">::</span><span class="s1">high_resolution_clock</span><span class="s5">::</span><span class="s1">now</span><span class="s5">();</span>
+
+    <span class="s1">sorter</span><span class="s5">.</span><span class="s1">insertionSort</span><span class="s5">(</span><span class="s1">v_insertion</span><span class="s5">);</span>
+
+    <span class="s4">auto </span><span class="s1">endInsertion </span><span class="s5">= </span><span class="s1">chrono</span><span class="s5">::</span><span class="s1">high_resolution_clock</span><span class="s5">::</span><span class="s1">now</span><span class="s5">();</span>
+
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Sorted array: &quot;</span><span class="s5">;</span>
+    <span class="s1">print</span><span class="s5">(</span><span class="s1">v_insertion</span><span class="s5">);</span>
+
+    <span class="s1">chrono</span><span class="s5">::</span><span class="s1">duration</span><span class="s5">&lt;</span><span class="s4">double</span><span class="s5">, </span><span class="s1">micro</span><span class="s5">&gt; </span><span class="s1">time_insertion </span><span class="s5">= </span><span class="s1">endInsertion </span><span class="s5">- </span><span class="s1">startInsertion</span><span class="s5">;</span>
+
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Insertion computation time: &quot; </span><span class="s5">&lt;&lt; </span><span class="s1">time_insertion</span><span class="s5">.</span><span class="s1">count</span><span class="s5">() &lt;&lt; </span><span class="s3">&quot; microseconds&quot; </span><span class="s5">&lt;&lt; </span><span class="s1">endl</span><span class="s5">;</span>
+
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Sorting using output of std::sort &quot; </span><span class="s5">&lt;&lt; </span><span class="s1">endl</span><span class="s5">; </span><span class="s0">//is the same</span>
+    <span class="s1">sort </span><span class="s5">(</span><span class="s1">v</span><span class="s5">.</span><span class="s1">begin</span><span class="s5">(), </span><span class="s1">v</span><span class="s5">.</span><span class="s1">end</span><span class="s5">());</span>
+    <span class="s4">for </span><span class="s5">(</span><span class="s4">int </span><span class="s5">&amp; </span><span class="s1">it </span><span class="s5">: </span><span class="s1">v</span><span class="s5">){</span>
+        <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">' ' </span><span class="s5">&lt;&lt; </span><span class="s1">it</span><span class="s5">;</span>
+    <span class="s5">}</span>
+<span class="s5">}</span>
+
+<span class="s0">/** test bubble sort on various files and receive how long the computation time was 
+ * @params: sorter- object to access the Sortings class 
+ * @returns: N/A, void function 
+ * dependency- bubbleSort() 
+ * */</span>
+<span class="s4">void </span><span class="s1">test_file_bubble</span><span class="s5">(</span><span class="s1">Sortings</span><span class="s5">&amp; </span><span class="s1">sorter</span><span class="s5">, </span><span class="s1">string filename</span><span class="s5">) {</span>
+    <span class="s1">vector</span><span class="s5">&lt;</span><span class="s4">int</span><span class="s5">&gt; </span><span class="s1">v </span><span class="s5">= </span><span class="s1">readfile</span><span class="s5">(</span><span class="s1">filename</span><span class="s5">);</span>
+
+    <span class="s4">if </span><span class="s5">(</span><span class="s1">v</span><span class="s5">.</span><span class="s1">empty</span><span class="s5">()) {</span>
+        <span class="s1">cerr </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Error: No data read from the file or file is empty.&quot; </span><span class="s5">&lt;&lt; </span><span class="s1">endl</span><span class="s5">;</span>
+        <span class="s4">return</span><span class="s5">;</span>
+    <span class="s5">}</span>
+
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Original Array: &quot; </span><span class="s5">&lt;&lt; </span><span class="s1">endl</span><span class="s5">;</span>
+    <span class="s1">print</span><span class="s5">(</span><span class="s1">v</span><span class="s5">);</span>
+
+    <span class="s1">vector</span><span class="s5">&lt;</span><span class="s4">int</span><span class="s5">&gt; </span><span class="s1">v_insertion </span><span class="s5">= </span><span class="s1">v</span><span class="s5">;</span>
+
+    <span class="s4">auto </span><span class="s1">startBubble </span><span class="s5">= </span><span class="s1">chrono</span><span class="s5">::</span><span class="s1">high_resolution_clock</span><span class="s5">::</span><span class="s1">now</span><span class="s5">();</span>
+
+    <span class="s1">sorter</span><span class="s5">.</span><span class="s1">bubbleSort</span><span class="s5">(</span><span class="s1">v_insertion</span><span class="s5">);</span>
+
+    <span class="s4">auto </span><span class="s1">endBubble </span><span class="s5">= </span><span class="s1">chrono</span><span class="s5">::</span><span class="s1">high_resolution_clock</span><span class="s5">::</span><span class="s1">now</span><span class="s5">();</span>
+
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Sorted array: &quot;</span><span class="s5">;</span>
+    <span class="s1">print</span><span class="s5">(</span><span class="s1">v_insertion</span><span class="s5">);</span>
+
+    <span class="s1">chrono</span><span class="s5">::</span><span class="s1">duration</span><span class="s5">&lt;</span><span class="s4">double</span><span class="s5">, </span><span class="s1">micro</span><span class="s5">&gt; </span><span class="s1">time_bubble </span><span class="s5">= </span><span class="s1">endBubble </span><span class="s5">- </span><span class="s1">startBubble</span><span class="s5">;</span>
+
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Bubble computation time: &quot; </span><span class="s5">&lt;&lt; </span><span class="s1">time_bubble</span><span class="s5">.</span><span class="s1">count</span><span class="s5">() &lt;&lt; </span><span class="s3">&quot; microseconds&quot; </span><span class="s5">&lt;&lt; </span><span class="s1">endl</span><span class="s5">;</span>
+
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Sorting using output of std::sort &quot; </span><span class="s5">&lt;&lt; </span><span class="s1">endl</span><span class="s5">; </span><span class="s0">//is the same</span>
+    <span class="s1">sort </span><span class="s5">(</span><span class="s1">v</span><span class="s5">.</span><span class="s1">begin</span><span class="s5">(), </span><span class="s1">v</span><span class="s5">.</span><span class="s1">end</span><span class="s5">());</span>
+    <span class="s4">for </span><span class="s5">(</span><span class="s4">int </span><span class="s5">&amp; </span><span class="s1">it </span><span class="s5">: </span><span class="s1">v</span><span class="s5">){</span>
+        <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">' ' </span><span class="s5">&lt;&lt; </span><span class="s1">it</span><span class="s5">;</span>
+    <span class="s5">}</span>
+
+<span class="s5">}</span>
+
+<span class="s0">/** test quick sort on various files and receive how long the computation time was 
+ * @params: sorter- object to access the Sortings class 
+ * @returns: N/A, void function 
+ * dependency- quickSort() 
+ * */</span>
+<span class="s4">void </span><span class="s1">test_file_quick</span><span class="s5">(</span><span class="s1">Sortings</span><span class="s5">&amp; </span><span class="s1">sorter</span><span class="s5">, </span><span class="s1">string filename</span><span class="s5">) {</span>
+    <span class="s1">vector</span><span class="s5">&lt;</span><span class="s4">int</span><span class="s5">&gt; </span><span class="s1">v </span><span class="s5">= </span><span class="s1">readfile</span><span class="s5">(</span><span class="s1">filename</span><span class="s5">);</span>
+
+    <span class="s4">if </span><span class="s5">(</span><span class="s1">v</span><span class="s5">.</span><span class="s1">empty</span><span class="s5">()) {</span>
+        <span class="s1">cerr </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Error: No data read from the file or file is empty.&quot; </span><span class="s5">&lt;&lt; </span><span class="s1">endl</span><span class="s5">;</span>
+        <span class="s4">return</span><span class="s5">;</span>
+    <span class="s5">}</span>
+
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Original Array: &quot; </span><span class="s5">&lt;&lt; </span><span class="s1">endl</span><span class="s5">;</span>
+    <span class="s1">print</span><span class="s5">(</span><span class="s1">v</span><span class="s5">);</span>
+
+    <span class="s1">vector</span><span class="s5">&lt;</span><span class="s4">int</span><span class="s5">&gt; </span><span class="s1">v_quick </span><span class="s5">= </span><span class="s1">v</span><span class="s5">;</span>
+
+    <span class="s4">auto </span><span class="s1">startQuick </span><span class="s5">= </span><span class="s1">chrono</span><span class="s5">::</span><span class="s1">high_resolution_clock</span><span class="s5">::</span><span class="s1">now</span><span class="s5">();</span>
+
+    <span class="s1">sorter</span><span class="s5">.</span><span class="s1">quickSort</span><span class="s5">(</span><span class="s1">v_quick</span><span class="s5">,</span><span class="s6">0</span><span class="s5">, </span><span class="s1">v</span><span class="s5">.</span><span class="s1">size</span><span class="s5">() - </span><span class="s6">1</span><span class="s5">);</span>
+
+    <span class="s4">auto </span><span class="s1">endQuick </span><span class="s5">= </span><span class="s1">chrono</span><span class="s5">::</span><span class="s1">high_resolution_clock</span><span class="s5">::</span><span class="s1">now</span><span class="s5">();</span>
+
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Sorted array: &quot;</span><span class="s5">;</span>
+    <span class="s1">print</span><span class="s5">(</span><span class="s1">v_quick</span><span class="s5">);</span>
+
+    <span class="s1">chrono</span><span class="s5">::</span><span class="s1">duration</span><span class="s5">&lt;</span><span class="s4">double</span><span class="s5">, </span><span class="s1">micro</span><span class="s5">&gt; </span><span class="s1">time_quick </span><span class="s5">= </span><span class="s1">endQuick </span><span class="s5">- </span><span class="s1">startQuick</span><span class="s5">;</span>
+
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Quick computation time: &quot; </span><span class="s5">&lt;&lt; </span><span class="s1">time_quick</span><span class="s5">.</span><span class="s1">count</span><span class="s5">() &lt;&lt; </span><span class="s3">&quot; microseconds&quot; </span><span class="s5">&lt;&lt; </span><span class="s1">endl</span><span class="s5">;</span>
+<span class="s5">}</span>
+
+<span class="s0">/** test quick sort with median of 3 on various files and receive how long the computation time was 
+ * @params: sorter- object to access the Sortings class 
+ * @returns: N/A, void function 
+ * dependency- quickSortMed() 
+ * */</span>
+<span class="s4">void </span><span class="s1">test_file_quickMed</span><span class="s5">(</span><span class="s1">Sortings</span><span class="s5">&amp; </span><span class="s1">sorter</span><span class="s5">, </span><span class="s1">string filename</span><span class="s5">) {</span>
+    <span class="s1">vector</span><span class="s5">&lt;</span><span class="s4">int</span><span class="s5">&gt; </span><span class="s1">v </span><span class="s5">= </span><span class="s1">readfile</span><span class="s5">(</span><span class="s1">filename</span><span class="s5">);</span>
+
+    <span class="s4">if </span><span class="s5">(</span><span class="s1">v</span><span class="s5">.</span><span class="s1">empty</span><span class="s5">()) {</span>
+        <span class="s1">cerr </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Error: No data read from the file or file is empty.&quot; </span><span class="s5">&lt;&lt; </span><span class="s1">endl</span><span class="s5">;</span>
+        <span class="s4">return</span><span class="s5">;</span>
+    <span class="s5">}</span>
+
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Original Array: &quot; </span><span class="s5">&lt;&lt; </span><span class="s1">endl</span><span class="s5">;</span>
+    <span class="s1">print</span><span class="s5">(</span><span class="s1">v</span><span class="s5">);</span>
+
+    <span class="s1">vector</span><span class="s5">&lt;</span><span class="s4">int</span><span class="s5">&gt; </span><span class="s1">v_quickMed </span><span class="s5">= </span><span class="s1">v</span><span class="s5">;</span>
+
+    <span class="s4">auto </span><span class="s1">startQuickMed </span><span class="s5">= </span><span class="s1">chrono</span><span class="s5">::</span><span class="s1">high_resolution_clock</span><span class="s5">::</span><span class="s1">now</span><span class="s5">();</span>
+
+    <span class="s1">sorter</span><span class="s5">.</span><span class="s1">quickSortMed</span><span class="s5">(</span><span class="s1">v_quickMed</span><span class="s5">,</span><span class="s6">0</span><span class="s5">, </span><span class="s1">v</span><span class="s5">.</span><span class="s1">size</span><span class="s5">() - </span><span class="s6">1</span><span class="s5">);</span>
+
+    <span class="s4">auto </span><span class="s1">endQuick </span><span class="s5">= </span><span class="s1">chrono</span><span class="s5">::</span><span class="s1">high_resolution_clock</span><span class="s5">::</span><span class="s1">now</span><span class="s5">();</span>
+
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Sorted array: &quot;</span><span class="s5">;</span>
+    <span class="s1">print</span><span class="s5">(</span><span class="s1">v_quickMed</span><span class="s5">);</span>
+
+    <span class="s1">chrono</span><span class="s5">::</span><span class="s1">duration</span><span class="s5">&lt;</span><span class="s4">double</span><span class="s5">, </span><span class="s1">micro</span><span class="s5">&gt;  </span><span class="s1">time_quickMed </span><span class="s5">= </span><span class="s1">endQuick </span><span class="s5">- </span><span class="s1">startQuickMed</span><span class="s5">;</span>
+
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Quick Medium of 3 computation time: &quot; </span><span class="s5">&lt;&lt; </span><span class="s1">time_quickMed</span><span class="s5">.</span><span class="s1">count</span><span class="s5">() &lt;&lt; </span><span class="s3">&quot; microseconds&quot; </span><span class="s5">&lt;&lt; </span><span class="s1">endl</span><span class="s5">;</span>
+
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Sorting using output of std::sort &quot; </span><span class="s5">&lt;&lt; </span><span class="s1">endl</span><span class="s5">; </span><span class="s0">//is the same</span>
+    <span class="s1">sort </span><span class="s5">(</span><span class="s1">v</span><span class="s5">.</span><span class="s1">begin</span><span class="s5">(), </span><span class="s1">v</span><span class="s5">.</span><span class="s1">end</span><span class="s5">());</span>
+    <span class="s4">for </span><span class="s5">(</span><span class="s4">int </span><span class="s5">&amp; </span><span class="s1">it </span><span class="s5">: </span><span class="s1">v</span><span class="s5">){</span>
+        <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">' ' </span><span class="s5">&lt;&lt; </span><span class="s1">it</span><span class="s5">;</span>
+    <span class="s5">}</span>
+<span class="s5">}</span>
+
+<span class="s0">/** test count sort on various files and receive how long the computation time was 
+ * @params: sorter- object to access the Sortings class 
+ * @returns: N/A, void function 
+ * dependency- countSort() 
+ * */</span>
+<span class="s4">void </span><span class="s1">test_file_count</span><span class="s5">(</span><span class="s1">Sortings</span><span class="s5">&amp; </span><span class="s1">sorter</span><span class="s5">, </span><span class="s1">string filename</span><span class="s5">) {</span>
+    <span class="s1">vector</span><span class="s5">&lt;</span><span class="s4">int</span><span class="s5">&gt; </span><span class="s1">v </span><span class="s5">= </span><span class="s1">readfile</span><span class="s5">(</span><span class="s1">filename</span><span class="s5">);</span>
+
+    <span class="s4">if </span><span class="s5">(</span><span class="s1">v</span><span class="s5">.</span><span class="s1">empty</span><span class="s5">()) {</span>
+        <span class="s1">cerr </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Error: No data read from the file or file is empty.&quot; </span><span class="s5">&lt;&lt; </span><span class="s1">endl</span><span class="s5">;</span>
+        <span class="s4">return</span><span class="s5">;</span>
+    <span class="s5">}</span>
+
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Original Array: &quot; </span><span class="s5">&lt;&lt; </span><span class="s1">endl</span><span class="s5">;</span>
+    <span class="s1">print</span><span class="s5">(</span><span class="s1">v</span><span class="s5">);</span>
+
+    <span class="s1">vector</span><span class="s5">&lt;</span><span class="s4">int</span><span class="s5">&gt; </span><span class="s1">v_count </span><span class="s5">= </span><span class="s1">v</span><span class="s5">;</span>
+
+    <span class="s4">auto </span><span class="s1">startCount </span><span class="s5">= </span><span class="s1">chrono</span><span class="s5">::</span><span class="s1">high_resolution_clock</span><span class="s5">::</span><span class="s1">now</span><span class="s5">();</span>
+
+    <span class="s1">sorter</span><span class="s5">.</span><span class="s1">insertionSort</span><span class="s5">(</span><span class="s1">v_count</span><span class="s5">);</span>
+
+    <span class="s4">auto </span><span class="s1">endCount </span><span class="s5">= </span><span class="s1">chrono</span><span class="s5">::</span><span class="s1">high_resolution_clock</span><span class="s5">::</span><span class="s1">now</span><span class="s5">();</span>
+
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Sorted array: &quot;</span><span class="s5">;</span>
+    <span class="s1">print</span><span class="s5">(</span><span class="s1">v_count</span><span class="s5">);</span>
+
+    <span class="s1">chrono</span><span class="s5">::</span><span class="s1">duration</span><span class="s5">&lt;</span><span class="s4">double</span><span class="s5">, </span><span class="s1">micro</span><span class="s5">&gt; </span><span class="s1">time_count </span><span class="s5">= </span><span class="s1">endCount </span><span class="s5">- </span><span class="s1">startCount</span><span class="s5">;</span>
+
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Count computation time: &quot; </span><span class="s5">&lt;&lt; </span><span class="s1">time_count</span><span class="s5">.</span><span class="s1">count</span><span class="s5">() &lt;&lt; </span><span class="s3">&quot; microseconds&quot; </span><span class="s5">&lt;&lt; </span><span class="s1">endl</span><span class="s5">;</span>
+
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Sorting using output of std::sort &quot; </span><span class="s5">&lt;&lt; </span><span class="s1">endl</span><span class="s5">; </span><span class="s0">//is the same</span>
+    <span class="s1">sort </span><span class="s5">(</span><span class="s1">v</span><span class="s5">.</span><span class="s1">begin</span><span class="s5">(), </span><span class="s1">v</span><span class="s5">.</span><span class="s1">end</span><span class="s5">());</span>
+    <span class="s4">for </span><span class="s5">(</span><span class="s4">int </span><span class="s5">&amp; </span><span class="s1">it </span><span class="s5">: </span><span class="s1">v</span><span class="s5">){</span>
+        <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">' ' </span><span class="s5">&lt;&lt; </span><span class="s1">it</span><span class="s5">;</span>
+    <span class="s5">}</span>
+<span class="s5">}</span>
+
+<span class="s0">/** test heap sort on various files and receive how long the computation time was 
+ * @params: sorter- object to access the Sortings class 
+ * @returns: N/A, void function 
+ * dependency- heapSort() 
+ * */</span>
+<span class="s4">void </span><span class="s1">test_file_heap</span><span class="s5">(</span><span class="s1">Sortings</span><span class="s5">&amp; </span><span class="s1">sorter</span><span class="s5">, </span><span class="s1">string filename</span><span class="s5">) {</span>
+    <span class="s1">vector</span><span class="s5">&lt;</span><span class="s4">int</span><span class="s5">&gt; </span><span class="s1">v </span><span class="s5">= </span><span class="s1">readfile</span><span class="s5">(</span><span class="s1">filename</span><span class="s5">);</span>
+
+    <span class="s4">if </span><span class="s5">(</span><span class="s1">v</span><span class="s5">.</span><span class="s1">empty</span><span class="s5">()) {</span>
+        <span class="s1">cerr </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Error: No data read from the file or file is empty.&quot; </span><span class="s5">&lt;&lt; </span><span class="s1">endl</span><span class="s5">;</span>
+        <span class="s4">return</span><span class="s5">;</span>
+    <span class="s5">}</span>
+
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Original Array: &quot; </span><span class="s5">&lt;&lt; </span><span class="s1">endl</span><span class="s5">;</span>
+    <span class="s1">print</span><span class="s5">(</span><span class="s1">v</span><span class="s5">);</span>
+
+    <span class="s1">vector</span><span class="s5">&lt;</span><span class="s4">int</span><span class="s5">&gt; </span><span class="s1">v_heap </span><span class="s5">= </span><span class="s1">v</span><span class="s5">;</span>
+
+    <span class="s4">auto </span><span class="s1">startHeap </span><span class="s5">= </span><span class="s1">chrono</span><span class="s5">::</span><span class="s1">high_resolution_clock</span><span class="s5">::</span><span class="s1">now</span><span class="s5">();</span>
+
+    <span class="s1">sorter</span><span class="s5">.</span><span class="s1">insertionSort</span><span class="s5">(</span><span class="s1">v_heap</span><span class="s5">);</span>
+
+    <span class="s4">auto </span><span class="s1">endHeap </span><span class="s5">= </span><span class="s1">chrono</span><span class="s5">::</span><span class="s1">high_resolution_clock</span><span class="s5">::</span><span class="s1">now</span><span class="s5">();</span>
+
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Sorted array: &quot;</span><span class="s5">;</span>
+    <span class="s1">print</span><span class="s5">(</span><span class="s1">v_heap</span><span class="s5">);</span>
+
+    <span class="s1">chrono</span><span class="s5">::</span><span class="s1">duration</span><span class="s5">&lt;</span><span class="s4">double</span><span class="s5">, </span><span class="s1">micro</span><span class="s5">&gt; </span><span class="s1">time_heap </span><span class="s5">= </span><span class="s1">endHeap </span><span class="s5">- </span><span class="s1">startHeap</span><span class="s5">;</span>
+
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Heap computation time: &quot; </span><span class="s5">&lt;&lt; </span><span class="s1">time_heap</span><span class="s5">.</span><span class="s1">count</span><span class="s5">() &lt;&lt; </span><span class="s3">&quot; microseconds&quot; </span><span class="s5">&lt;&lt; </span><span class="s1">endl</span><span class="s5">;</span>
+
+    <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">&quot;Sorting using output of std::sort &quot; </span><span class="s5">&lt;&lt; </span><span class="s1">endl</span><span class="s5">; </span><span class="s0">//is the same</span>
+    <span class="s1">sort </span><span class="s5">(</span><span class="s1">v</span><span class="s5">.</span><span class="s1">begin</span><span class="s5">(), </span><span class="s1">v</span><span class="s5">.</span><span class="s1">end</span><span class="s5">());</span>
+    <span class="s4">for </span><span class="s5">(</span><span class="s4">int </span><span class="s5">&amp; </span><span class="s1">it </span><span class="s5">: </span><span class="s1">v</span><span class="s5">){</span>
+        <span class="s1">cout </span><span class="s5">&lt;&lt; </span><span class="s3">' ' </span><span class="s5">&lt;&lt; </span><span class="s1">it</span><span class="s5">;</span>
+    <span class="s5">}</span>
+
+<span class="s5">}</span>
+
+
+
+
+<span class="s4">int </span><span class="s1">main</span><span class="s5">() {</span>
+    <span class="s1">Sortings sorter</span><span class="s5">; </span><span class="s0">//object of Sortings</span>
+
+    <span class="s1">test_insertion</span><span class="s5">(</span><span class="s1">sorter</span><span class="s5">);</span>
+    <span class="s1">test_bubble</span><span class="s5">(</span><span class="s1">sorter</span><span class="s5">);</span>
+    <span class="s1">test_quicksort</span><span class="s5">(</span><span class="s1">sorter</span><span class="s5">);</span>
+    <span class="s1">test_quicksortMed</span><span class="s5">(</span><span class="s1">sorter</span><span class="s5">);</span>
+    <span class="s1">test_count</span><span class="s5">(</span><span class="s1">sorter</span><span class="s5">);</span>
+    <span class="s1">test_heap</span><span class="s5">(</span><span class="s1">sorter</span><span class="s5">);</span>
+
+    <span class="s1">test_file_insertion</span><span class="s5">(</span><span class="s1">sorter</span><span class="s5">, </span><span class="s3">&quot;data-100.in&quot;</span><span class="s5">);</span>
+    <span class="s1">test_file_bubble</span><span class="s5">(</span><span class="s1">sorter</span><span class="s5">, </span><span class="s3">&quot;data-100.in&quot;</span><span class="s5">);</span>
+    <span class="s1">test_file_quick</span><span class="s5">(</span><span class="s1">sorter</span><span class="s5">, </span><span class="s3">&quot;data-100.in&quot;</span><span class="s5">);</span>
+    <span class="s1">test_file_quickMed</span><span class="s5">(</span><span class="s1">sorter</span><span class="s5">, </span><span class="s3">&quot;data-100.in&quot;</span><span class="s5">);</span>
+    <span class="s1">test_file_count</span><span class="s5">(</span><span class="s1">sorter</span><span class="s5">, </span><span class="s3">&quot;data-100.in&quot;</span><span class="s5">);</span>
+    <span class="s1">test_file_heap</span><span class="s5">(</span><span class="s1">sorter</span><span class="s5">, </span><span class="s3">&quot;data-100.in&quot;</span><span class="s5">);</span>
+
+    <span class="s4">return </span><span class="s6">0</span><span class="s5">;</span>
+<span class="s5">}</span>
+</pre>
+</body>
+</html>

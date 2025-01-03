@@ -1,0 +1,213 @@
+<html>
+<head>
+<title>README</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #bcbec4;}
+</style>
+</head>
+<body bgcolor="#1e1f22">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+README</font>
+</center></td></tr></table>
+<pre><span class="s0">Assignment: Sorting Algorithms (COMP 218- Data Structures) (Assignment Number): 4</span>
+<span class="s0">Author(s):Rylie Seaberg</span>
+<span class="s0">Due Date: Wednesday, 12/4/2024 11:59:00 PM</span>
+<span class="s0">Description: In this project, we are working with sorting algorithms in order to sort a</span>
+<span class="s0">vector or array of integers. The second part of the project is an assesment of performance on</span>
+<span class="s0">the sorting algorithms to test their execution times based on files of varying numbers integers</span>
+<span class="s0">(100, 1000, 10000).</span>
+<span class="s0">Comments:</span>
+<span class="s0">Honor Pledge: I have abided by the Wheaton Honor Code and</span>
+<span class="s0">all work below was performed by Rylie Seaberg .</span>
+
+<span class="s0">Files: main.cpp, sortings.cpp, sortings.h, README</span>
+    <span class="s0">Files for testing: data-100.in, data-100.out, data-1000.in, data-1000.out,</span>
+     <span class="s0">data-10000.in, data-10000.out</span>
+
+<span class="s0">Test Plan: Each sorting algorithm will be tested using the five test cases shown below, they will</span>
+<span class="s0">each also be tested using the standard template library function std::sort. They were also tested using</span>
+<span class="s0">files of integers that have either 100, 1000, or 10000 integers.</span>
+    <span class="s0">Insertion Sort-</span>
+     <span class="s0">* 1) check if insertion sort works with a small number of integers in the vector</span>
+     <span class="s0">input sample: 7, 2, 5, 3</span>
+     <span class="s0">output sample: 2 3 5 7</span>
+     <span class="s0">* 2) check if insertion sort works with a large number of integers in the vector</span>
+     <span class="s0">input sample: 15, 3, 12, 6, 9, 17, 5, 20, 8, 2, 10, 1</span>
+     <span class="s0">output sample: 1 2 3 5 6 8 9 10 12 15 17 20</span>
+     <span class="s0">* 3) check how insertion sort deals with duplicates</span>
+     <span class="s0">input sample: 4, 2, 7, 7, 3, 4, 1</span>
+     <span class="s0">output sample: 1 2 3 4 4 7 7</span>
+     <span class="s0">* 4) check how insertion sort deals with negative integers</span>
+     <span class="s0">input sample: -5, -2, -8, 3, 0, -1</span>
+     <span class="s0">output sample: -8 -5 -2 -1 0 3</span>
+     <span class="s0">* 5) check how insertion sort deals with an already sorted vector</span>
+     <span class="s0">input sample: 1, 2, 3, 4, 5</span>
+     <span class="s0">output sample: 1, 2, 3, 4, 5</span>
+
+    <span class="s0">Bubble Sort-</span>
+     <span class="s0">* 1) check if insertion sort works with a small number of integers in the vector</span>
+     <span class="s0">input sample: 7, 2, 5, 3</span>
+     <span class="s0">output sample: 2 3 5 7</span>
+     <span class="s0">* 2) check if insertion sort works with a large number of integers in the vector</span>
+     <span class="s0">input sample: 15, 3, 12, 6, 9, 17, 5, 20, 8, 2, 10, 1</span>
+     <span class="s0">output sample: 1 2 3 5 6 8 9 10 12 15 17 20</span>
+     <span class="s0">* 3) check how insertion sort deals with duplicates</span>
+     <span class="s0">input sample: 4, 2, 7, 7, 3, 4, 1</span>
+     <span class="s0">output sample: 1 2 3 4 4 7 7</span>
+     <span class="s0">* 4) check how insertion sort deals with negative integers</span>
+     <span class="s0">input sample: -5, -2, -8, 3, 0, -1</span>
+     <span class="s0">output sample: -8 -5 -2 -1 0 3</span>
+     <span class="s0">* 5) check how insertion sort deals with an already sorted vector</span>
+     <span class="s0">input sample: 1, 2, 3, 4, 5</span>
+     <span class="s0">output sample: 1, 2, 3, 4, 5</span>
+
+    <span class="s0">Quick Sort-</span>
+     <span class="s0">* 1) check if insertion sort works with a small number of integers in the vector</span>
+     <span class="s0">input sample: 1, 7, 6, 12</span>
+     <span class="s0">output sample: 1 6 7 12</span>
+     <span class="s0">* 2) check if insertion sort works with a large number of integers in the vector</span>
+     <span class="s0">input sample: 1, 8, 19, 12, 67, 89, 96, 120, 13, 77, 2, 9</span>
+     <span class="s0">output sample: 1 2 8 9 12 13 19 67 77 89 96 120</span>
+     <span class="s0">* 3) check how insertion sort deals with duplicates</span>
+     <span class="s0">input sample: 1, 7, 12, 19, 7, 65, 16</span>
+     <span class="s0">output sample: 1 7 7 12 16 19 65</span>
+     <span class="s0">* 4) check how insertion sort deals with negative integers</span>
+     <span class="s0">input sample: -3, -1, -7, 4, 0, -2</span>
+     <span class="s0">output sample: -7 -3 -2 -1 0 4</span>
+     <span class="s0">* 5) check how insertion sort deals with an already sorted vector</span>
+     <span class="s0">input sample: 1, 2, 3, 4, 5</span>
+     <span class="s0">output sample: 1, 2, 3, 4, 5</span>
+
+    <span class="s0">Quick Sort Median of 3-</span>
+     <span class="s0">* 1) check if insertion sort works with a small number of integers in the vector</span>
+     <span class="s0">input sample: 1, 7, 6, 12</span>
+     <span class="s0">output sample:  1 6 7 1</span>
+     <span class="s0">* 2) check if insertion sort works with a large number of integers in the vector</span>
+     <span class="s0">input sample: 1, 8, 19, 12, 67, 89, 96, 120, 13, 77, 2, 9</span>
+     <span class="s0">output sample: 1 2 8 9 12 13 19 67 77 89 96 120</span>
+     <span class="s0">* 3) check how insertion sort deals with duplicates</span>
+     <span class="s0">input sample: 1, 7, 12, 19, 7, 65, 16</span>
+     <span class="s0">output sample: 1 7 7 12 16 19 65</span>
+     <span class="s0">* 4) check how insertion sort deals with negative integers</span>
+     <span class="s0">input sample: -3, -1, -7, 4, 0, -2</span>
+     <span class="s0">output sample: -7 -3 -2 -1 0 4</span>
+     <span class="s0">* 5) check how insertion sort deals with an already sorted vector</span>
+     <span class="s0">input sample: 1, 2, 3, 4, 5</span>
+     <span class="s0">output sample: 1, 2, 3, 4, 5</span>
+
+    <span class="s0">Count Sort-</span>
+     <span class="s0">* 1) check if insertion sort works with a small number of integers in the vector</span>
+     <span class="s0">input sample: 7, 2, 5, 3</span>
+     <span class="s0">output sample: 2 3 5 7</span>
+     <span class="s0">* 2) check if insertion sort works with a large number of integers in the vector</span>
+     <span class="s0">input sample: 15, 3, 12, 6, 9, 17, 5, 20, 8, 2, 10, 1</span>
+     <span class="s0">output sample: 1 2 3 5 6 8 9 10 12 15 17 20</span>
+     <span class="s0">* 3) check how insertion sort deals with duplicates</span>
+     <span class="s0">input sample: 4, 2, 7, 7, 3, 4, 1</span>
+     <span class="s0">output sample: 1 2 3 4 4 7 7</span>
+     <span class="s0">* 4) check how insertion sort deals with negative integers</span>
+     <span class="s0">input sample: -5, -2, -8, 3, 0, -1</span>
+     <span class="s0">output sample: -8 -5 -2 -1 0 3</span>
+     <span class="s0">* 5) check how insertion sort deals with an already sorted vector</span>
+     <span class="s0">input sample: 1, 2, 3, 4, 5</span>
+     <span class="s0">output sample: 1, 2, 3, 4, 5</span>
+
+    <span class="s0">Heap Sort-</span>
+     <span class="s0">* 1) check if insertion sort works with a small number of integers in the vector</span>
+     <span class="s0">input sample: 7, 2, 5, 3</span>
+     <span class="s0">output sample: 2 3 5 7</span>
+     <span class="s0">* 2) check if insertion sort works with a large number of integers in the vector</span>
+     <span class="s0">input sample: 15, 3, 12, 6, 9, 17, 5, 20, 8, 2, 10, 1</span>
+     <span class="s0">output sample: 1 2 3 5 6 8 9 10 12 15 17 20</span>
+     <span class="s0">* 3) check how insertion sort deals with duplicates</span>
+     <span class="s0">input sample: 4, 2, 7, 7, 3, 4, 1</span>
+     <span class="s0">output sample: 1 2 3 4 4 7 7</span>
+     <span class="s0">* 4) check how insertion sort deals with negative integers</span>
+     <span class="s0">input sample: -5, -2, -8, 3, 0, -1</span>
+     <span class="s0">output sample:  -8 -5 -2 -1 0 3</span>
+     <span class="s0">* 5) check how insertion sort deals with an already sorted vector</span>
+     <span class="s0">input sample: 1, 2, 3, 4, 5</span>
+     <span class="s0">output sample: 1, 2, 3, 4, 5</span>
+
+<span class="s0">Time and Space Complexities:</span>
+    <span class="s0">* Insertion Sort:</span>
+       <span class="s0">Time Complexity Best Case: O(N)</span>
+       <span class="s0">Time Complexity Worst/Average Case: O(N^2)</span>
+       <span class="s0">Space Complexity: O(1)</span>
+    <span class="s0">* Bubble Sort:</span>
+       <span class="s0">Time Complexity Case: O(N)</span>
+       <span class="s0">Space Complexity: O(1)</span>
+    <span class="s0">* Quick Sort:</span>
+        <span class="s0">Time Complexity Best/Average Case: O(NlogN)</span>
+        <span class="s0">Time Complexity Worst Case: O(N^2)</span>
+        <span class="s0">Space Complexity: O(N)</span>
+    <span class="s0">* Quick Sort Median of Three:</span>
+        <span class="s0">Time Complexity Best Case: O(N)</span>
+        <span class="s0">Time Complexity Worst/Average Case: O(N^2)</span>
+        <span class="s0">Space Complexity Best/Average Case: O(logN) balanced partitions</span>
+        <span class="s0">Space Complexity Worst Case: O(N) unbalanced partitions</span>
+    <span class="s0">* Count Sort:</span>
+        <span class="s0">Time Complexity Case: O(N + size of input array)</span>
+        <span class="s0">Space Complexity: O(N + size of output array)</span>
+    <span class="s0">* Heap Sort:</span>
+        <span class="s0">Time Complexity Case: O(NlogN)</span>
+        <span class="s0">Space Complexity: O(logN)</span>
+
+<span class="s0">All sorting algorithms have an increased time as the amount of integers to be sorted increases. I was able</span>
+<span class="s0">to run the sorting algorithms each three times for the three different files and then average them in order</span>
+<span class="s0">to find the average time each sorting algorithm took for the increasing number of integers (shown below).</span>
+ <span class="s0">* Insertion Sort:</span>
+    <span class="s0">Average time 100 integer file- 17.708</span>
+    <span class="s0">Average time 1000 integer file- 1608.11</span>
+    <span class="s0">Average time 10000 integer file- 140198.66</span>
+ <span class="s0">* Bubble Sort:</span>
+    <span class="s0">Average time 100 integer file- 51.069</span>
+    <span class="s0">Average time 1000 integer file- 5130.31</span>
+    <span class="s0">Average time 10000 integer file- 627726.66</span>
+ <span class="s0">* Quick Sort:</span>
+    <span class="s0">Average time 100 integer file- 9.88</span>
+    <span class="s0">Average time 1000 integer file- 146.39</span>
+    <span class="s0">Average time 10000 integer file- 1916.51</span>
+ <span class="s0">* Quick Sort Median of Three:</span>
+    <span class="s0">Average time 100 integer file- 13.72</span>
+    <span class="s0">Average time 1000 integer file- 190.75</span>
+    <span class="s0">Average time 10000 integer file- 2233.25</span>
+ <span class="s0">* Count Sort:</span>
+    <span class="s0">Average time 100 integer file- 18</span>
+    <span class="s0">Average time 1000 integer file- 1408.64</span>
+    <span class="s0">Average time 10000 integer file- 141115.66</span>
+ <span class="s0">* Heap Sort:</span>
+    <span class="s0">Average time 100 integer file- 18.194</span>
+    <span class="s0">Average time 1000 integer file- 1424.75</span>
+    <span class="s0">Average time 10000 integer file- 1412.03</span>
+
+<span class="s0">The bubble sort algorithm was the worst performing sorting algorithm. The 100 integer file had an average computation</span>
+<span class="s0">time of 51.069 microseconds, the 1000 integer file had an average time of 5130.31 microseconds, and finally the 10000</span>
+<span class="s0">integer file had an average time of 627726.66 microseconds. I found this by runnning the sorting algortihm on each of</span>
+<span class="s0">the files three times and then averaging the times. The three averages for the bubble sort sorting algorithm were</span>
+<span class="s0">significantly higher than that of the other sorting algorithms tested. For example, the heap sort algorithm had an</span>
+<span class="s0">average time of 1412.03 microseconds for the 10000 integer file whereas the bubble sort algorithm had an average of</span>
+<span class="s0">627726.66 microseconds, which is an outstandly higher number.</span>
+
+<span class="s0">The standard quick sort algorithm was the best performing sorting algorithm. The average times for all three</span>
+<span class="s0">integer files was the lowest. The 100 integer file had an average computation time of 9.88 microseconds, the</span>
+<span class="s0">1000 integer file had an average time of 146.39 microseconds, and finally the 10000 integer file had an average</span>
+<span class="s0">time of 1916.51 microseconds. I found this by runnning the sorting algortihm on each of the files three times</span>
+<span class="s0">and then averaging the times. HeapSort() actually had the fastest average 10000 file time but over all the standard</span>
+<span class="s0">quick sort had the fastest average time for the three files.</span>
+
+<span class="s0">The standard quick sort was also better than the medium of 3 quick sort for average time of the three files.</span>
+<span class="s0">They were extremely similar in the sense of a ballpark of around the same numbers. The 100 integer file had an</span>
+<span class="s0">average computation time of 9.88 microseconds, the 1000 integer file had an average time of 146.39 microseconds,</span>
+<span class="s0">and finally the 10000 integer file had an average time of 1916.51 microseconds for the standard quick sort. For the</span>
+<span class="s0">quick sort median of 3 function the 100 integer file had an average computation time of 13.72 microseconds, the 1000</span>
+<span class="s0">integer file had an average time of 190.75 microseconds, and finally the 10000 integer file had an average time of</span>
+<span class="s0">2233.25 microseconds.  I found this by runnning the sorting algortihm on each of the files three times</span>
+<span class="s0">and then averaging the times. I think this has to do with the fact that there is an extra function called when using the</span>
+<span class="s0">quick sort median of 3 to actually find the median of three, however, it clearly does not add a significant amount of</span>
+<span class="s0">time.</span></pre>
+</body>
+</html>

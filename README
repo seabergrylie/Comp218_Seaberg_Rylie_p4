@@ -1,0 +1,197 @@
+Assignment: Sorting Algorithms (COMP 218- Data Structures) (Assignment Number): 4
+Author(s):Rylie Seaberg
+Due Date: Wednesday, 12/4/2024 11:59:00 PM
+Description: In this project, we are working with sorting algorithms in order to sort a
+vector or array of integers. The second part of the project is an assesment of performance on
+the sorting algorithms to test their execution times based on files of varying numbers integers
+(100, 1000, 10000).
+Comments:
+Honor Pledge: I have abided by the Wheaton Honor Code and
+all work below was performed by Rylie Seaberg .
+
+Files: main.cpp, sortings.cpp, sortings.h, README
+    Files for testing: data-100.in, data-100.out, data-1000.in, data-1000.out,
+     data-10000.in, data-10000.out
+
+Test Plan: Each sorting algorithm will be tested using the five test cases shown below, they will
+each also be tested using the standard template library function std::sort. They were also tested using
+files of integers that have either 100, 1000, or 10000 integers.
+    Insertion Sort-
+     * 1) check if insertion sort works with a small number of integers in the vector
+     input sample: 7, 2, 5, 3
+     output sample: 2 3 5 7
+     * 2) check if insertion sort works with a large number of integers in the vector
+     input sample: 15, 3, 12, 6, 9, 17, 5, 20, 8, 2, 10, 1
+     output sample: 1 2 3 5 6 8 9 10 12 15 17 20
+     * 3) check how insertion sort deals with duplicates
+     input sample: 4, 2, 7, 7, 3, 4, 1
+     output sample: 1 2 3 4 4 7 7
+     * 4) check how insertion sort deals with negative integers
+     input sample: -5, -2, -8, 3, 0, -1
+     output sample: -8 -5 -2 -1 0 3
+     * 5) check how insertion sort deals with an already sorted vector
+     input sample: 1, 2, 3, 4, 5
+     output sample: 1, 2, 3, 4, 5
+
+    Bubble Sort-
+     * 1) check if insertion sort works with a small number of integers in the vector
+     input sample: 7, 2, 5, 3
+     output sample: 2 3 5 7
+     * 2) check if insertion sort works with a large number of integers in the vector
+     input sample: 15, 3, 12, 6, 9, 17, 5, 20, 8, 2, 10, 1
+     output sample: 1 2 3 5 6 8 9 10 12 15 17 20
+     * 3) check how insertion sort deals with duplicates
+     input sample: 4, 2, 7, 7, 3, 4, 1
+     output sample: 1 2 3 4 4 7 7
+     * 4) check how insertion sort deals with negative integers
+     input sample: -5, -2, -8, 3, 0, -1
+     output sample: -8 -5 -2 -1 0 3
+     * 5) check how insertion sort deals with an already sorted vector
+     input sample: 1, 2, 3, 4, 5
+     output sample: 1, 2, 3, 4, 5
+
+    Quick Sort-
+     * 1) check if insertion sort works with a small number of integers in the vector
+     input sample: 1, 7, 6, 12
+     output sample: 1 6 7 12
+     * 2) check if insertion sort works with a large number of integers in the vector
+     input sample: 1, 8, 19, 12, 67, 89, 96, 120, 13, 77, 2, 9
+     output sample: 1 2 8 9 12 13 19 67 77 89 96 120
+     * 3) check how insertion sort deals with duplicates
+     input sample: 1, 7, 12, 19, 7, 65, 16
+     output sample: 1 7 7 12 16 19 65
+     * 4) check how insertion sort deals with negative integers
+     input sample: -3, -1, -7, 4, 0, -2
+     output sample: -7 -3 -2 -1 0 4
+     * 5) check how insertion sort deals with an already sorted vector
+     input sample: 1, 2, 3, 4, 5
+     output sample: 1, 2, 3, 4, 5
+
+    Quick Sort Median of 3-
+     * 1) check if insertion sort works with a small number of integers in the vector
+     input sample: 1, 7, 6, 12
+     output sample:  1 6 7 1
+     * 2) check if insertion sort works with a large number of integers in the vector
+     input sample: 1, 8, 19, 12, 67, 89, 96, 120, 13, 77, 2, 9
+     output sample: 1 2 8 9 12 13 19 67 77 89 96 120
+     * 3) check how insertion sort deals with duplicates
+     input sample: 1, 7, 12, 19, 7, 65, 16
+     output sample: 1 7 7 12 16 19 65
+     * 4) check how insertion sort deals with negative integers
+     input sample: -3, -1, -7, 4, 0, -2
+     output sample: -7 -3 -2 -1 0 4
+     * 5) check how insertion sort deals with an already sorted vector
+     input sample: 1, 2, 3, 4, 5
+     output sample: 1, 2, 3, 4, 5
+
+    Count Sort-
+     * 1) check if insertion sort works with a small number of integers in the vector
+     input sample: 7, 2, 5, 3
+     output sample: 2 3 5 7
+     * 2) check if insertion sort works with a large number of integers in the vector
+     input sample: 15, 3, 12, 6, 9, 17, 5, 20, 8, 2, 10, 1
+     output sample: 1 2 3 5 6 8 9 10 12 15 17 20
+     * 3) check how insertion sort deals with duplicates
+     input sample: 4, 2, 7, 7, 3, 4, 1
+     output sample: 1 2 3 4 4 7 7
+     * 4) check how insertion sort deals with negative integers
+     input sample: -5, -2, -8, 3, 0, -1
+     output sample: -8 -5 -2 -1 0 3
+     * 5) check how insertion sort deals with an already sorted vector
+     input sample: 1, 2, 3, 4, 5
+     output sample: 1, 2, 3, 4, 5
+
+    Heap Sort-
+     * 1) check if insertion sort works with a small number of integers in the vector
+     input sample: 7, 2, 5, 3
+     output sample: 2 3 5 7
+     * 2) check if insertion sort works with a large number of integers in the vector
+     input sample: 15, 3, 12, 6, 9, 17, 5, 20, 8, 2, 10, 1
+     output sample: 1 2 3 5 6 8 9 10 12 15 17 20
+     * 3) check how insertion sort deals with duplicates
+     input sample: 4, 2, 7, 7, 3, 4, 1
+     output sample: 1 2 3 4 4 7 7
+     * 4) check how insertion sort deals with negative integers
+     input sample: -5, -2, -8, 3, 0, -1
+     output sample:  -8 -5 -2 -1 0 3
+     * 5) check how insertion sort deals with an already sorted vector
+     input sample: 1, 2, 3, 4, 5
+     output sample: 1, 2, 3, 4, 5
+
+Time and Space Complexities:
+    * Insertion Sort:
+       Time Complexity Best Case: O(N)
+       Time Complexity Worst/Average Case: O(N^2)
+       Space Complexity: O(1)
+    * Bubble Sort:
+       Time Complexity Case: O(N)
+       Space Complexity: O(1)
+    * Quick Sort:
+        Time Complexity Best/Average Case: O(NlogN)
+        Time Complexity Worst Case: O(N^2)
+        Space Complexity: O(N)
+    * Quick Sort Median of Three:
+        Time Complexity Best Case: O(N)
+        Time Complexity Worst/Average Case: O(N^2)
+        Space Complexity Best/Average Case: O(logN) balanced partitions
+        Space Complexity Worst Case: O(N) unbalanced partitions
+    * Count Sort:
+        Time Complexity Case: O(N + size of input array)
+        Space Complexity: O(N + size of output array)
+    * Heap Sort:
+        Time Complexity Case: O(NlogN)
+        Space Complexity: O(logN)
+
+All sorting algorithms have an increased time as the amount of integers to be sorted increases. I was able
+to run the sorting algorithms each three times for the three different files and then average them in order
+to find the average time each sorting algorithm took for the increasing number of integers (shown below).
+ * Insertion Sort:
+    Average time 100 integer file- 17.708
+    Average time 1000 integer file- 1608.11
+    Average time 10000 integer file- 140198.66
+ * Bubble Sort:
+    Average time 100 integer file- 51.069
+    Average time 1000 integer file- 5130.31
+    Average time 10000 integer file- 627726.66
+ * Quick Sort:
+    Average time 100 integer file- 9.88
+    Average time 1000 integer file- 146.39
+    Average time 10000 integer file- 1916.51
+ * Quick Sort Median of Three:
+    Average time 100 integer file- 13.72
+    Average time 1000 integer file- 190.75
+    Average time 10000 integer file- 2233.25
+ * Count Sort:
+    Average time 100 integer file- 18
+    Average time 1000 integer file- 1408.64
+    Average time 10000 integer file- 141115.66
+ * Heap Sort:
+    Average time 100 integer file- 18.194
+    Average time 1000 integer file- 1424.75
+    Average time 10000 integer file- 1412.03
+
+The bubble sort algorithm was the worst performing sorting algorithm. The 100 integer file had an average computation
+time of 51.069 microseconds, the 1000 integer file had an average time of 5130.31 microseconds, and finally the 10000
+integer file had an average time of 627726.66 microseconds. I found this by runnning the sorting algortihm on each of
+the files three times and then averaging the times. The three averages for the bubble sort sorting algorithm were
+significantly higher than that of the other sorting algorithms tested. For example, the heap sort algorithm had an
+average time of 1412.03 microseconds for the 10000 integer file whereas the bubble sort algorithm had an average of
+627726.66 microseconds, which is an outstandly higher number.
+
+The standard quick sort algorithm was the best performing sorting algorithm. The average times for all three
+integer files was the lowest. The 100 integer file had an average computation time of 9.88 microseconds, the
+1000 integer file had an average time of 146.39 microseconds, and finally the 10000 integer file had an average
+time of 1916.51 microseconds. I found this by runnning the sorting algortihm on each of the files three times
+and then averaging the times. HeapSort() actually had the fastest average 10000 file time but over all the standard
+quick sort had the fastest average time for the three files.
+
+The standard quick sort was also better than the medium of 3 quick sort for average time of the three files.
+They were extremely similar in the sense of a ballpark of around the same numbers. The 100 integer file had an
+average computation time of 9.88 microseconds, the 1000 integer file had an average time of 146.39 microseconds,
+and finally the 10000 integer file had an average time of 1916.51 microseconds for the standard quick sort. For the
+quick sort median of 3 function the 100 integer file had an average computation time of 13.72 microseconds, the 1000
+integer file had an average time of 190.75 microseconds, and finally the 10000 integer file had an average time of
+2233.25 microseconds.  I found this by runnning the sorting algortihm on each of the files three times
+and then averaging the times. I think this has to do with the fact that there is an extra function called when using the
+quick sort median of 3 to actually find the median of three, however, it clearly does not add a significant amount of
+time.
